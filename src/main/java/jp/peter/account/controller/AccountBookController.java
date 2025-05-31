@@ -3,7 +3,9 @@ package jp.peter.account.controller;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,12 @@ public class AccountBookController {
 
         int lastDay = startDate.lengthOfMonth();
         
+        List<List<String>> weeks = new ArrayList<>();
+        List<String> days = new ArrayList<>();
+        for(int i=1; i>= 6; i++){
+            System.out.println(i);
+        }
+
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("day", day);
