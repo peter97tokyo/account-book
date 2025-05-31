@@ -29,21 +29,35 @@ public class AccountBookController {
         LocalDate startDate = LocalDate.of(year, month, 1);
 
         DayOfWeek week = startDate.getDayOfWeek();
-        int iWeek = week.getValue();
+        int firstDayWeek = week.getValue();
 
         int lastDay = startDate.lengthOfMonth();
         
-        List<List<String>> weeks = new ArrayList<>();
-        List<String> days = new ArrayList<>();
-        for(int i=1; i>= 6; i++){
-            System.out.println(i);
+        List<List<Integer>> weeks = new ArrayList<>();
+        List<Integer> days = new ArrayList<>();
+        int getDay = 1;
+        
+        for(int i = 0; i <= 34; i++) {
+            if (firstDayWeek <= i && getDay <= lastDay) {
+                days.add(getDay);
+                getDay++;
+            }else {
+                days.add(null);
+            }
         }
+        for (int j = 0; j < 5; j++) {
+            List<Integer> weekWithForeach = new ArrayList<>(days.subList(0, 7));            
+            weeks.add(weekWithForeach);
+            days.subList(0, 7).clear();
+        }
+        
 
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("day", day);
-        model.addAttribute("week", iWeek);
+        model.addAttribute("firstDayWeek", firstDayWeek);
         model.addAttribute("lastDay", lastDay);
+        model.addAttribute("weeks", weeks);
         
         return "accountBook"; 
     }
