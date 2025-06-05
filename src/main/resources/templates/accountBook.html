@@ -5,26 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ACCOUNT BOOK</title>
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/account-book.css">
+
     <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
 </head>
 <body>
     <main class="container">
-        <h1 th:text="${month}">1월</h1>
+        <section class="calender-field">
+            <div class="d-flex justify-content-start previous-field">
+                <button type="button" class="btn btn-dark font-weight-bold">&lt;&lt;</button>
+            </div>
+
+            <div class="year-container">
+                <div th:text="${year}" class="year-field">year</div>
+            </div>
+            <div class="month-container">
+                <div th:text="${month}" class="month-field">month</div>
+            </div>
+            <div class="blank-calender-field"></div>
+
+            <div class="d-flex justify-content-end next-field">
+                <button type="button" class="btn btn-dark font-weight-bold">&gt;&gt;</button>
+            </div>
+        </section>
+
         <table class="table table-bordered">
             <thead>
               <tr>
-                <th class="bg-danger text-white">일</th>
-                <th class="bg-dark text-white">월</th>
-                <th class="bg-dark text-white">화</th>
-                <th class="bg-dark text-white">수</th>
-                <th class="bg-dark text-white">목</th>
-                <th class="bg-dark text-white">금</th>
-                <th class="bg-primary text-white">토</th>
+                <th class="bg-danger text-white week-field">SUN</th>
+                <th class="bg-dark text-white week-field">MON</th>
+                <th class="bg-dark text-white week-field">TUE</th>
+                <th class="bg-dark text-white week-field">WED</th>
+                <th class="bg-dark text-white week-field">THE</th>
+                <th class="bg-dark text-white week-field">PRI</th>
+                <th class="bg-primary text-white week-field">SAT</th>
               </tr>
             </thead>
             <tbody>
                 <tr th:each="week : ${weeks}">
-                    <td th:each="day : ${week}" th:text="${day}">day</td>
+                    <td th:each="days : ${week}" class="justify-content-end date-field">
+                        <div th:if="${day == days}">
+                            <div th:if="${days != null}" class="d-flex justify-content-between">
+                                <span class="font-weight-bold">+</span>
+                                <span th:text="${days }">days</span>
+                            </div>
+                        </div>
+                        <div th:unless="${day == days}">
+                            <div th:if="${days != null}" class="d-flex justify-content-between">
+                                <span class="font-weight-bold">+</span>
+                                <span th:text="${days }">days</span>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </table>

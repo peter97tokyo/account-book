@@ -37,7 +37,7 @@ public class AccountBookController {
         List<Integer> days = new ArrayList<>();
         int getDay = 1;
         
-        for(int i = 0; i <= 34; i++) {
+        for(int i = 0; i <= 41; i++) {
             if (firstDayWeek <= i && getDay <= lastDay) {
                 days.add(getDay);
                 getDay++;
@@ -45,7 +45,8 @@ public class AccountBookController {
                 days.add(null);
             }
         }
-        for (int j = 0; j < 5; j++) {
+        
+        for (int j = 0; j < 6; j++) {
             List<Integer> weekWithForeach = new ArrayList<>(days.subList(0, 7));            
             weeks.add(weekWithForeach);
             days.subList(0, 7).clear();

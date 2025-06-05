@@ -1,0 +1,52 @@
+.calender-field {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.year-container {
+    width: 80%;
+    position: relative;
+}
+
+.year-field {
+    font-size: 30px;
+    position: absolute;
+    bottom: 0;
+    right: 10px;
+    margin: 0;
+}
+
+.month-field {
+    font-size: 90px;
+    font-weight: bold;
+    margin: 0;
+    line-height: 1;
+}
+
+.blank-calender-field {
+    width: 80%;
+}
+
+.previous-field {
+    width: 20%;
+}
+
+.next-field {
+    width: 20%;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+}
+
+.week-field {
+    width: 14.2%;
+    text-align: center;
+    
+}
+
+.date-field {
+    height: 150px;
+}
