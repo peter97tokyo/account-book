@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/account-book.css">
 
     <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/js/account-book.js"></script>
 </head>
 <body>
     <main class="container">
@@ -47,18 +48,58 @@
                         <div th:if="${day == days}" class="account-book-parent">
                             <div th:text="${days }" class="today-line">days</div>
                             <div class="account-book-field"></div>
-                            <a class="d-flex justify-content-end font-weight-bold a-tag-none">+</a>
+                            <a href="#" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveReceipt([[${days}]] );">+</a>
                         </div>
                         <div th:unless="${day == days}" class="account-book-parent">
                             <div th:if="${days != null}" th:text="${days }">days</div>
                             <div th:if="${days != null}" class="account-book-field"></div>
-                            <a th:if="${days != null}" class="d-flex justify-content-end font-weight-bold a-tag-none">+</a>
+                            <a href="#" th:if="${days != null}" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveReceipt([[${days}]] );">+</a>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
-        
+        <section id="popup" class="popup">
+            <div class="popup-bg">
+                <div class="popup-wrap card">
+                    <div class="card-body">
+                        <p class="d-flex justify-content-center">
+                            <b>
+                                RECEIPT
+                            </b>
+                        </p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Date</span>
+                            <input type="date" class="form-control" disabled>
+                        </div>                        
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Type</span>
+                            <select class="form-select">
+                                <option value="rent">Monthly rent</option>
+                                <option value="util">Utilities</option>
+                                <option value="food">Food cost</option>
+                                <option value="goods">Sundry goods</option>
+                                <option value="gift">Gift</option>
+                                <option value="etc">Etc</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Price</span>
+                            <input type="number" class="form-control">
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Memo</span>
+                            <input type="text" class="form-control">
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-dark">OK</button>
+                            <button type="button" class="btn btn-dark" onclick="saveReceipt(0)">NO</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 </body>
 </html>
