@@ -14,7 +14,11 @@
     <main class="container">
         <section class="calender-field">
             <div class="d-flex justify-content-start previous-field">
-                <button type="button" class="btn btn-dark font-weight-bold">&lt;&lt;</button>
+                <form action="/accountBook" method="post">
+                    <input type="hidden" name="year" th:value="${month == 1 ? year - 1 : year}" />
+                    <input type="hidden" name="month" th:value="${month == 1 ? 12 : month - 1}" />
+                    <button type="submit" class="btn btn-dark font-weight-bold">&lt;&lt;</button>
+                </form>
             </div>
 
             <div class="year-container">
@@ -26,7 +30,11 @@
             <div class="blank-calender-field">
             </div>
             <div class="d-flex justify-content-end next-field">
-                <button type="button" class="btn btn-dark font-weight-bold">&gt;&gt;</button>
+                <form action="/accountBook" method="post">
+                    <input type="hidden" name="year" th:value="${month == 12 ? year + 1 : year}" />
+                    <input type="hidden" name="month" th:value="${month == 12 ? 1 : month + 1}" />
+                    <button type="submit" class="btn btn-dark font-weight-bold">&gt;&gt;</button>
+                </form>
             </div>
         </section>
 
@@ -45,7 +53,7 @@
             <tbody>
                 <tr th:each="week : ${weeks}">
                     <td th:each="days : ${week}" class="justify-content-end date-field">
-                        <div th:if="${day == days}" class="account-book-parent">
+                        <div th:if="${day != null && day == days}" class="account-book-parent">
                             <div th:text="${days }" class="today-line">days</div>
                             <div class="account-book-field"></div>
                             <a href="#" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveReceipt([[${days}]] );">+</a>

@@ -10,6 +10,8 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AccountBookController {
@@ -18,7 +20,7 @@ public class AccountBookController {
     public String accountBook(Model model) {
         Date today = new Date();
 
-        SimpleDateFormat yearFormat = new SimpleDateFormat("YYYY");
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
         SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
         SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
         
@@ -62,4 +64,54 @@ public class AccountBookController {
         
         return "accountBook"; 
     }
+
+    @PostMapping("/accountBook")
+    public String accountBook(@RequestParam(required = false) Integer year,
+                            @RequestParam(required = false) Integer month,
+                            Model model) {
+        // 현재 날짜 기준 기본값 설정
+        LocalDate today = LocalDate.now();
+
+        if (year == null || month == null) {
+            year = today.getYear();
+            month = today.getMonthValue();
+        }
+
+        // 해당 월의 1일
+        LocalDate startDate = LocalDate.of(year, month, 1);
+
+        // 요일 (1=월요일, 7=일요일)
+        DayOfWeek week = startDate.getDayOfWeek();
+        int firstDayWeek = week.getValue();
+
+        int lastDay = startDate.lengthOfMonth();
+
+        List<List<Integer>> weeks = new ArrayList<>();
+        List<Integer> days = new ArrayList<>();
+        int getDay = 1;
+
+        for (int i = 0; i <= 41; i++) {
+            if (firstDayWeek <= i && getDay <= lastDay) {
+                days.add(getDay);
+                getDay++;
+            } else {
+                days.add(null);
+            }
+        }
+
+        for (int j = 0; j < 6; j++) {
+            List<Integer> weekWithForeach = new ArrayList<>(days.subList(0, 7));
+            weeks.add(weekWithForeach);
+            days.subList(0, 7).clear();
+        }
+
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+        model.addAttribute("firstDayWeek", firstDayWeek);
+        model.addAttribute("lastDay", lastDay);
+        model.addAttribute("weeks", weeks);
+
+        return "accountBook";
+    }
+
 }
