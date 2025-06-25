@@ -1,3 +1,52 @@
-.height-hundred {
-    height: 100%;
+body {
+    background: url('../images/index/notebook-pen-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #222;
+    font-family: 'Helvetica Neue', sans-serif;
+    text-align: center;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(255, 255, 255, 0.75); /* 반투명 흰 필터 */
+    z-index: -1;
+}
+
+.main-title {
+    font-size: 3rem;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    color: #111;
+}
+
+.sub-title {
+    font-size: 1.3rem;
+    color: #444;
+}
+
+.start-button {
+    margin-top: 60px;
+    padding: 20px 50px;
+    font-size: 1.8rem;
+    border-radius: 40px;
+    background-color: #fff;
+    color: #000;
+    border: 2px solid #000;
+    transition: all 0.3s ease;
+}
+
+.start-button:hover {
+    background-color: #000;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.footer {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    color: #999;
+    font-size: 0.95rem;
 }

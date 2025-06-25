@@ -92,3 +92,7 @@
 .popup {
     display: none;
 }
+
+.btn-height-hundred {
+    height: 100%; /* 나중에 클래스명 바꾸기 */
+}

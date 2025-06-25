@@ -6,7 +6,7 @@
     <title>ACCOUNT BOOK</title>
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/css/account-book.css">
-    <link rel="stylesheet" href="/css/index.css">
+    
 
     <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="/js/account-book.js"></script>
@@ -18,7 +18,7 @@
                 <form action="/accountBook" method="post" class="box-inline">
                     <input type="hidden" name="year" th:value="${month == 1 ? year - 1 : year}" />
                     <input type="hidden" name="month" th:value="${month == 1 ? 12 : month - 1}" />
-                    <button type="submit" class="btn btn-dark font-weight-bold height-hundred">&lt;&lt;</button>
+                    <button type="submit" class="btn btn-dark font-weight-bold btn-height-hundred">&lt;&lt;</button>
                 </form>
             </div>
 
@@ -34,7 +34,7 @@
                 <form action="/accountBook" method="post" class="box-inline">
                     <input type="hidden" name="year" th:value="${month == 12 ? year + 1 : year}" />
                     <input type="hidden" name="month" th:value="${month == 12 ? 1 : month + 1}" />
-                    <button type="submit" class="btn btn-dark font-weight-bold height-hundred">&gt;&gt;</button>
+                    <button type="submit" class="btn btn-dark font-weight-bold btn-height-hundred">&gt;&gt;</button>
                 </form>
             </div>
         </section>
