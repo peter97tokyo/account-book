@@ -1,9 +1,7 @@
 package jp.peter.account.entity;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
-import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -26,6 +24,15 @@ public class Wallet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private short year;
+
+    @Column(nullable = false)
+    private byte month;
+
+    @Column(nullable = false)
+    private byte day;
 
     @Column(nullable = false) 
     private Boolean depositWithdrawal;

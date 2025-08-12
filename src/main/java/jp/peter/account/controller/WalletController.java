@@ -22,8 +22,17 @@ public class WalletController {
     public String wallet(@ModelAttribute WalletDto walletDto) {
 
         Wallet saveWallet = new Wallet();
-        System.out.println("peter1");
-        System.out.println(saveWallet);
+        
+        String dateStr = walletDto.getChoosedDate(); 
+        String[] parts = dateStr.split("-");
+
+        int year = Integer.parseInt(parts[0]); 
+        int month = Integer.parseInt(parts[1]); 
+        int day = Integer.parseInt(parts[2]); 
+
+        saveWallet.setYear((short) year);  
+        saveWallet.setMonth((byte) month); 
+        saveWallet.setDay((byte) day);
 
         saveWallet.setMemo(walletDto.getMemo());
         saveWallet.setMoney(walletDto.getMoney());

@@ -57,12 +57,12 @@
                         <div th:if="${day != null && day == days}" class="account-book-parent">
                             <div th:text="${days }" class="today-line">days</div>
                             <div class="account-book-field"></div>
-                            <a href="#" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveReceipt([[${days}]] );">+</a>
+                            <a href="#" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
                         </div>
                         <div th:unless="${day == days}" class="account-book-parent">
                             <div th:if="${days != null}" th:text="${days }">days</div>
                             <div th:if="${days != null}" class="account-book-field"></div>
-                            <a href="#" th:if="${days != null}" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveReceipt([[${days}]] );">+</a>
+                            <a href="#" th:if="${days != null}" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
                         </div>
                     </td>
                 </tr>
@@ -81,7 +81,7 @@
                             </p>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Date</span>
-                                <input type="date" class="form-control" disabled>
+                                <input type="date" id="choosedDate" name="choosedDate" class="form-control" readonly>
                             </div>                        
                             <div class="input-group mb-3">
                                 <span class="input-group-text">deposit/withdrawal</span>
@@ -112,7 +112,7 @@
 
                             <div class="d-flex justify-content-between">
                                 <button type="submit" class="btn btn-dark">OK</button>
-                                <button type="button" class="btn btn-dark" onclick="saveReceipt(0)">NO</button>
+                                <button type="button" class="btn btn-dark" onclick="saveWallet(0,0,0)">NO</button>
                             </div>
                         </div>
                     </div>
