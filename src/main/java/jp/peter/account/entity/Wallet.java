@@ -27,17 +27,14 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(nullable = false) 
     private Boolean depositWithdrawal;
 
     private String memo;
 
-    @NotNull
     @Column(nullable = false) 
     private Long money;
 
-    @NotNull
     @Column(nullable = false) 
     private String type;
 
