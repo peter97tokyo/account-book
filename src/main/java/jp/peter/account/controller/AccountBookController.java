@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
-import jp.peter.account.entity.Wallet;
 import jp.peter.account.service.WalletService;
 
 @Controller
@@ -64,11 +62,17 @@ public class AccountBookController {
     
         Long sumMoney = null;
         byte dayByte = 0;
-        Long[] sumMoneyArr = new Long[lastDay + 1];
+        Long[] totalWithdrawal = new Long[lastDay + 1];
+        Long[] totalDeposit = new Long[lastDay + 1];
+        
         for (int i = 1; i <= lastDay; i++) {
             dayByte = (byte) i;
-            sumMoney = walletService.findTotalMoneyByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
-            sumMoneyArr[i] = sumMoney;    
+
+            sumMoney = walletService.findTotalWithdrawalByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
+            totalWithdrawal[i] = sumMoney;    
+
+            sumMoney = walletService.findTotalDepositByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
+            totalDeposit[i] = sumMoney;
         }
         
         
@@ -78,7 +82,8 @@ public class AccountBookController {
         model.addAttribute("firstDayWeek", firstDayWeek);
         model.addAttribute("lastDay", lastDay);
         model.addAttribute("weeks", weeks);
-        model.addAttribute("sumMoneyArr", sumMoneyArr);
+        model.addAttribute("totalWithdrawal", totalWithdrawal);
+        model.addAttribute("totalDeposit", totalDeposit);
         
         return "accountBook"; 
     }
@@ -127,11 +132,17 @@ public class AccountBookController {
         short yearShort = year.shortValue(); 
         byte monthByte = month.byteValue();  
         byte dayByte = 0;
-        Long[] sumMoneyArr = new Long[lastDay + 1];
+        Long[] totalWithdrawal = new Long[lastDay + 1];
+        Long[] totalDeposit = new Long[lastDay + 1];
+
         for (int i = 0; i <= lastDay; i++) {
             dayByte = (byte) i;
-            sumMoney = walletService.findTotalMoneyByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
-            sumMoneyArr[i] = sumMoney;
+
+            sumMoney = walletService.findTotalWithdrawalByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            totalWithdrawal[i] = sumMoney;
+
+            sumMoney = walletService.findTotalDepositByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            totalDeposit[i] = sumMoney;
         }
 
         model.addAttribute("year", year);
@@ -139,7 +150,8 @@ public class AccountBookController {
         model.addAttribute("firstDayWeek", firstDayWeek);
         model.addAttribute("lastDay", lastDay);
         model.addAttribute("weeks", weeks);
-        model.addAttribute("sumMoneyArr", sumMoneyArr);
+        model.addAttribute("totalWithdrawal", totalWithdrawal);
+        model.addAttribute("totalDeposit", totalDeposit);
         return "accountBook";
     }
 

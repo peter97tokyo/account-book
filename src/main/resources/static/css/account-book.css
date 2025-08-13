@@ -96,3 +96,12 @@
 .btn-height-hundred {
     height: 100%; /* 나중에 클래스명 바꾸기 */
 }
+
+.not-padding-top-bottom {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.text-right {
+    text-align : end;
+}

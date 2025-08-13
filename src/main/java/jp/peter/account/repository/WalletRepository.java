@@ -12,5 +12,8 @@ import jp.peter.account.entity.Wallet;
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
        @Query(value = "SELECT SUM(money) FROM wallet WHERE year = :year AND month = :month AND day = :day AND deposit_withdrawal = FALSE", nativeQuery = true)
-       Long findTotalMoneyByYearAndMonthAndDayNative(@Param("year") short year, @Param("month") byte month, @Param("day") byte day);
+       Long findTotalWithdrawalByYearAndMonthAndDayNative(@Param("year") short year, @Param("month") byte month, @Param("day") byte day);
+
+       @Query(value = "SELECT SUM(money) FROM wallet WHERE year = :year AND month = :month AND day = :day AND deposit_withdrawal = TRUE", nativeQuery = true)
+       Long findTotalDepositByYearAndMonthAndDayNative(@Param("year") short year, @Param("month") byte month, @Param("day") byte day);
 }

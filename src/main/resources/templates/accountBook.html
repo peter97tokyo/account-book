@@ -56,12 +56,32 @@
                     <td th:each="days : ${week}" class="justify-content-end date-field">
                         <div th:if="${day != null && day == days}" class="account-book-parent">
                             <div th:text="${days }" class="today-line">days</div>
-                            <div class="account-book-field" th:text="${sumMoneyArr[days] }"></div>
+                            <div class="account-book-field" >
+                                <div th:if="${totalDeposit[days] != null}"
+                                    th:text="${#numbers.formatDecimal(totalDeposit[days], 0, 'COMMA', 0, 'POINT')} + ' 💵' "
+                                    class="alert alert-success not-padding-top-bottom text-right">
+                                </div>
+
+                                <div th:if="${totalWithdrawal[days] != null}"
+                                    th:text="${#numbers.formatDecimal(totalWithdrawal[days], 0, 'COMMA', 0, 'POINT')} + ' 💸' "
+                                    class="alert alert-danger not-padding-top-bottom text-right">
+                                </div>
+                            </div>
                             <a href="#" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="popupWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
                         </div>
                         <div th:unless="${day == days}" class="account-book-parent">
                             <div th:if="${days != null}" th:text="${days }">days</div>
-                            <div th:if="${days != null}" class="account-book-field" th:text="${sumMoneyArr[days] }"></div>
+                            <div th:if="${days != null}" class="account-book-field">
+                                <div th:if="${totalDeposit[days] != null}"
+                                    th:text="${#numbers.formatDecimal(totalDeposit[days], 0, 'COMMA', 0, 'POINT')} + ' 💵' "
+                                    class="alert alert-success not-padding-top-bottom text-right">
+                                </div>
+
+                                <div th:if="${totalWithdrawal[days] != null}"
+                                    th:text="${#numbers.formatDecimal(totalWithdrawal[days], 0, 'COMMA', 0, 'POINT')} + ' 💸' "
+                                    class="alert alert-danger not-padding-top-bottom text-right">
+                                </div>
+                            </div>
                             <a href="#" th:if="${days != null}" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="popupWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
                         </div>
                     </td>
