@@ -11,4 +11,7 @@ public interface WalletService {
     
     Wallet save(Wallet wallet);
     List<Wallet> findAll();
+
+    Long findTotalMoneyByYearAndMonthAndDayNative(short year, byte month, byte day);
+
 }

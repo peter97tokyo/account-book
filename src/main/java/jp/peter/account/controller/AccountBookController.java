@@ -7,14 +7,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+import jp.peter.account.entity.Wallet;
+import jp.peter.account.service.WalletService;
+
 @Controller
 public class AccountBookController {
+
+    @Autowired
+    private WalletService walletService;
     
     @GetMapping("/accountBook")
     public String accountBook(Model model) {
@@ -53,14 +61,24 @@ public class AccountBookController {
             weeks.add(weekWithForeach);
             days.subList(0, 7).clear();
         }
+    
+        Long sumMoney = null;
+        byte dayByte = 0;
+        Long[] sumMoneyArr = new Long[lastDay + 1];
+        for (int i = 1; i <= lastDay; i++) {
+            dayByte = (byte) i;
+            sumMoney = walletService.findTotalMoneyByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
+            sumMoneyArr[i] = sumMoney;    
+        }
         
-
+        
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("day", day);
         model.addAttribute("firstDayWeek", firstDayWeek);
         model.addAttribute("lastDay", lastDay);
         model.addAttribute("weeks", weeks);
+        model.addAttribute("sumMoneyArr", sumMoneyArr);
         
         return "accountBook"; 
     }
@@ -105,12 +123,23 @@ public class AccountBookController {
             days.subList(0, 7).clear();
         }
 
+        Long sumMoney = null;
+        short yearShort = year.shortValue(); 
+        byte monthByte = month.byteValue();  
+        byte dayByte = 0;
+        Long[] sumMoneyArr = new Long[lastDay + 1];
+        for (int i = 0; i <= lastDay; i++) {
+            dayByte = (byte) i;
+            sumMoney = walletService.findTotalMoneyByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            sumMoneyArr[i] = sumMoney;
+        }
+
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("firstDayWeek", firstDayWeek);
         model.addAttribute("lastDay", lastDay);
         model.addAttribute("weeks", weeks);
-
+        model.addAttribute("sumMoneyArr", sumMoneyArr);
         return "accountBook";
     }
 

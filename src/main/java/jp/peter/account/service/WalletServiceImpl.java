@@ -24,4 +24,10 @@ public class WalletServiceImpl implements WalletService {
     public List<Wallet> findAll() {
         return walletRepository.findAll();
     }
+
+    @Override
+    public Long findTotalMoneyByYearAndMonthAndDayNative(short year, byte month, byte day) {
+        return walletRepository.findTotalMoneyByYearAndMonthAndDayNative(year, month, day);
+    }
+    
 }
