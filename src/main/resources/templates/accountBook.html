@@ -57,12 +57,12 @@
                         <div th:if="${day != null && day == days}" class="account-book-parent">
                             <div th:text="${days }" class="today-line">days</div>
                             <div class="account-book-field"></div>
-                            <a href="#" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
+                            <a href="#" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="popupWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
                         </div>
                         <div th:unless="${day == days}" class="account-book-parent">
                             <div th:if="${days != null}" th:text="${days }">days</div>
                             <div th:if="${days != null}" class="account-book-field"></div>
-                            <a href="#" th:if="${days != null}" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="saveWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
+                            <a href="#" th:if="${days != null}" class="d-flex justify-content-end font-weight-bold a-tag-none" th:onclick="popupWallet([[${year}]], [[${month}]], [[${days}]] );">+</a>
                         </div>
                     </td>
                 </tr>
@@ -70,13 +70,13 @@
         </table>
         <section id="popup" class="popup">
 
-            <form action="./wallet" method="post">
+            <form action="./wallet" method="post" id="walletForm">
                 <div class="popup-bg">
                     <div class="popup-wrap card">
                         <div class="card-body">
                             <p class="d-flex justify-content-center">
                                 <b>
-                                    RECEIPT
+                                    WALLET
                                 </b>
                             </p>
                             <div class="input-group mb-3">
@@ -86,19 +86,19 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text">deposit/withdrawal</span>
                                 <select class="form-select" name="depositWithdrawal">
-                                    <option value="1">deposit</option>
-                                    <option value="0">withdrawal</option>
+                                    <option value="0">withdrawal 💸</option>
+                                    <option value="1">deposit 💵</option>
                                 </select>
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text">Type</span>
                                 <select class="form-select" name="type">
-                                    <option value="rent">Monthly rent</option>
-                                    <option value="util">Utilities</option>
-                                    <option value="food">Food cost</option>
-                                    <option value="goods">Sundry goods</option>
-                                    <option value="gift">Gift</option>
-                                    <option value="etc">Etc</option>
+                                    <option value="rent">Monthly rent 🏠</option>
+                                    <option value="util">Utilities 💄</option>
+                                    <option value="food">Food cost 🍖</option>
+                                    <option value="goods">Sundry goods 🧩</option>
+                                    <option value="gift">Gift 🎁</option>
+                                    <option value="etc">Etc 📦</option>
                                 </select>
                             </div>
                             <div class="input-group mb-3">
@@ -111,8 +111,8 @@
                             </div>
 
                             <div class="d-flex justify-content-between">
-                                <button type="submit" class="btn btn-dark">OK</button>
-                                <button type="button" class="btn btn-dark" onclick="saveWallet(0,0,0)">NO</button>
+                                <button type="submit" class="btn btn-dark" >OK</button>
+                                <button type="button" class="btn btn-dark" onclick="popupWallet(0,0,0)">NO</button>
                             </div>
                         </div>
                     </div>
