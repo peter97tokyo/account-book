@@ -26,12 +26,17 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Long findTotalWithdrawalByYearAndMonthAndDayNative(short year, byte month, byte day) {
-        return walletRepository.findTotalWithdrawalByYearAndMonthAndDayNative(year, month, day);
+    public Long findDailyWithdrawalByYearAndMonthAndDayNative(short year, byte month, byte day) {
+        return walletRepository.findDailyWithdrawalByYearAndMonthAndDayNative(year, month, day);
     }
     
     @Override
-    public Long findTotalDepositByYearAndMonthAndDayNative(short year, byte month, byte day) {
-        return walletRepository.findTotalDepositByYearAndMonthAndDayNative(year, month, day);
+    public Long findDailyDepositByYearAndMonthAndDayNative(short year, byte month, byte day) {
+        return walletRepository.findDailyDepositByYearAndMonthAndDayNative(year, month, day);
+    }
+
+    @Override
+    public Long findTotalInOut(short year, byte month, boolean depositWithdrawal) {
+        return walletRepository.findByYearAndMonthAndDepositWithdrawalNative(year, month, depositWithdrawal);
     }
 }

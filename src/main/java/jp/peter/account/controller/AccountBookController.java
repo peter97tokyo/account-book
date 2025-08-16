@@ -62,28 +62,32 @@ public class AccountBookController {
     
         Long sumMoney = null;
         byte dayByte = 0;
-        Long[] totalWithdrawal = new Long[lastDay + 1];
-        Long[] totalDeposit = new Long[lastDay + 1];
+        Long[] dailyWithdrawal = new Long[lastDay + 1];
+        Long[] dailyDeposit = new Long[lastDay + 1];
         
         for (int i = 1; i <= lastDay; i++) {
             dayByte = (byte) i;
 
-            sumMoney = walletService.findTotalWithdrawalByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
-            totalWithdrawal[i] = sumMoney;    
+            sumMoney = walletService.findDailyWithdrawalByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
+            dailyWithdrawal[i] = sumMoney;    
 
-            sumMoney = walletService.findTotalDepositByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
-            totalDeposit[i] = sumMoney;
+            sumMoney = walletService.findDailyDepositByYearAndMonthAndDayNative((short) year, (byte) month, dayByte);
+            dailyDeposit[i] = sumMoney;
         }
+
+        Long totalDeposit = walletService.findTotalInOut((short) year, (byte) month, true);
+        Long totalWithdrawal = walletService.findTotalInOut((short) year, (byte) month, false);
         
-        
+        model.addAttribute("totalDeposit", totalDeposit);
+        model.addAttribute("totalWithdrawal", totalWithdrawal);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("day", day);
         model.addAttribute("firstDayWeek", firstDayWeek);
         model.addAttribute("lastDay", lastDay);
         model.addAttribute("weeks", weeks);
-        model.addAttribute("totalWithdrawal", totalWithdrawal);
-        model.addAttribute("totalDeposit", totalDeposit);
+        model.addAttribute("dailyWithdrawal", dailyWithdrawal);
+        model.addAttribute("dailyDeposit", dailyDeposit);
         
         return "accountBook"; 
     }
@@ -132,26 +136,31 @@ public class AccountBookController {
         short yearShort = year.shortValue(); 
         byte monthByte = month.byteValue();  
         byte dayByte = 0;
-        Long[] totalWithdrawal = new Long[lastDay + 1];
-        Long[] totalDeposit = new Long[lastDay + 1];
+        Long[] dailyWithdrawal = new Long[lastDay + 1];
+        Long[] dailyDeposit = new Long[lastDay + 1];
 
         for (int i = 0; i <= lastDay; i++) {
             dayByte = (byte) i;
 
-            sumMoney = walletService.findTotalWithdrawalByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
-            totalWithdrawal[i] = sumMoney;
+            sumMoney = walletService.findDailyWithdrawalByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            dailyWithdrawal[i] = sumMoney;
 
-            sumMoney = walletService.findTotalDepositByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
-            totalDeposit[i] = sumMoney;
+            sumMoney = walletService.findDailyDepositByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            dailyDeposit[i] = sumMoney;
         }
 
+        Long totalDeposit = walletService.findTotalInOut(yearShort, monthByte, true);
+        Long totalWithdrawal = walletService.findTotalInOut(yearShort, monthByte, false);
+        
+        model.addAttribute("totalDeposit", totalDeposit);
+        model.addAttribute("totalWithdrawal", totalWithdrawal);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("firstDayWeek", firstDayWeek);
         model.addAttribute("lastDay", lastDay);
         model.addAttribute("weeks", weeks);
-        model.addAttribute("totalWithdrawal", totalWithdrawal);
-        model.addAttribute("totalDeposit", totalDeposit);
+        model.addAttribute("dailyWithdrawal", dailyWithdrawal);
+        model.addAttribute("dailyDeposit", dailyDeposit);
         return "accountBook";
     }
 

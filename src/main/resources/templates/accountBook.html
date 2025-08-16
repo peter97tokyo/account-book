@@ -29,6 +29,20 @@
                 <div th:text="${month}" class="month-field">month</div>
             </div>
             <div class="blank-calender-field">
+                <table class="in-out-table">
+                    <tr>
+                        <th>In</th>
+                        <th th:text="${totalDeposit}">1000</th>
+                    </tr>
+                    <tr>
+                        <th>Out</th>
+                        <th th:text="${totalWithdrawal}">1000</th>
+                    </tr>
+                    <tr>
+                        <th>Left</th>
+                        <th th:text="${totalDeposit - totalWithdrawal}">1000</th>
+                    </tr>
+                </table>
             </div>
             <div class="d-flex justify-content-end next-field">
                 <form action="/accountBook" method="post" class="box-inline">
@@ -57,13 +71,13 @@
                         <div th:if="${day != null && day == days}" class="account-book-parent">
                             <div th:text="${days }" class="today-line">days</div>
                             <div class="account-book-field" >
-                                <div th:if="${totalDeposit[days] != null}"
-                                    th:text="${#numbers.formatDecimal(totalDeposit[days], 0, 'COMMA', 0, 'POINT')} + ' 💵' "
+                                <div th:if="${dailyDeposit[days] != null}"
+                                    th:text="${#numbers.formatDecimal(dailyDeposit[days], 0, 'COMMA', 0, 'POINT')} + ' 💵' "
                                     class="alert alert-success not-padding-top-bottom text-right">
                                 </div>
 
-                                <div th:if="${totalWithdrawal[days] != null}"
-                                    th:text="${#numbers.formatDecimal(totalWithdrawal[days], 0, 'COMMA', 0, 'POINT')} + ' 💸' "
+                                <div th:if="${dailyWithdrawal[days] != null}"
+                                    th:text="${#numbers.formatDecimal(dailyWithdrawal[days], 0, 'COMMA', 0, 'POINT')} + ' 💸' "
                                     class="alert alert-danger not-padding-top-bottom text-right">
                                 </div>
                             </div>
@@ -72,13 +86,12 @@
                         <div th:unless="${day == days}" class="account-book-parent">
                             <div th:if="${days != null}" th:text="${days }">days</div>
                             <div th:if="${days != null}" class="account-book-field">
-                                <div th:if="${totalDeposit[days] != null}"
-                                    th:text="${#numbers.formatDecimal(totalDeposit[days], 0, 'COMMA', 0, 'POINT')} + ' 💵' "
+                                <div th:if="${dailyDeposit[days] != null}"
+                                    th:text="${#numbers.formatDecimal(dailyDeposit[days], 0, 'COMMA', 0, 'POINT')} + ' 💵' "
                                     class="alert alert-success not-padding-top-bottom text-right">
                                 </div>
-
-                                <div th:if="${totalWithdrawal[days] != null}"
-                                    th:text="${#numbers.formatDecimal(totalWithdrawal[days], 0, 'COMMA', 0, 'POINT')} + ' 💸' "
+                                <div th:if="${dailyWithdrawal[days] != null}"
+                                    th:text="${#numbers.formatDecimal(dailyWithdrawal[days], 0, 'COMMA', 0, 'POINT')} + ' 💸' "
                                     class="alert alert-danger not-padding-top-bottom text-right">
                                 </div>
                             </div>
