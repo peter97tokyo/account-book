@@ -12,13 +12,13 @@ function popupWallet(year, month, day) {
         dateInput.value = formattedDate;
     }
 
-    var popup = document.getElementById("popup");
-    var style = window.getComputedStyle(popup);
+    var popupForm = document.getElementById("popupForm");
+    var style = window.getComputedStyle(popupForm);
     
     if (style.display === "none") {
-        popup.style.display = "block";
+        popupForm.style.display = "block";
     } else {
-        popup.style.display = "none";
+        popupForm.style.display = "none";
     }
 
     return false;
@@ -36,6 +36,14 @@ function validateForm() {
         return false;
     }
     return true;
+}
+
+function openSidebar() {
+    document.getElementById("contentSidebar").classList.add("open");
+}
+
+function closeSidebar() {
+    document.getElementById("contentSidebar").classList.remove("open");
 }
 
 window.onload = function() {

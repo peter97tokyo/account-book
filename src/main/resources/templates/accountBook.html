@@ -32,15 +32,15 @@
                 <table class="in-out-table">
                     <tr>
                         <th>In</th>
-                        <th th:text="${totalDeposit}">1000</th>
+                        <th th:text="${#numbers.formatDecimal((totalDeposit?:0), 0, 'COMMA', 0, 'POINT')}" class="text-right ">1000</th>
                     </tr>
                     <tr>
                         <th>Out</th>
-                        <th th:text="${totalWithdrawal}">1000</th>
+                        <th th:text="${#numbers.formatDecimal((totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}" class="text-right ">1000</th>
                     </tr>
                     <tr>
                         <th>Left</th>
-                        <th th:text="${totalDeposit - totalWithdrawal}">1000</th>
+                        <th th:text="${#numbers.formatDecimal((totalDeposit?:0) - (totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}" class="text-right">1000</th>
                     </tr>
                 </table>
             </div>
@@ -101,7 +101,7 @@
                 </tr>
             </tbody>
         </table>
-        <section id="popup" class="popup">
+        <section id="popupForm" class="popupForm">
 
             <form action="./wallet" method="post" id="walletForm">
                 <div class="popup-bg">
@@ -152,6 +152,20 @@
                 </div>
             </form>
         </section>
+        
+        <button onclick="openSidebar()">사이드바 열기</button>
+
+        <section id="contentSidebar" class="content-sidebar">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeSidebar()">×</a>
+            <h2>리스트</h2>
+            <ul>
+                <li>아이템 1</li>
+                <li>아이템 2</li>
+                <li>아이템 3</li>
+            </ul>
+        </section>
+
+        
     </main>
 </body>
 </html>

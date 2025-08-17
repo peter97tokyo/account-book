@@ -89,7 +89,7 @@
     z-index: 1000;
 }
 
-.popup {
+.popupForm {
     display: none;
 }
 
@@ -108,4 +108,31 @@
 
 .in-out-table {
     height: 100%;
+}
+
+.content-sidebar {
+    border: 1px solid black;
+    height: 100%;
+    width: 0;                /* 처음에는 숨김 */
+    position: fixed;
+    right: 0;
+    top: 0;
+    background: #f9f9f9;
+    overflow-x: hidden;
+    transition: 0.5s;        /* 슬라이드 효과 */
+    z-index: 10;
+    padding-top: 60px;       /* 닫기 버튼과 간격 */
+}
+
+.content-sidebar.open {
+    width: 30%;              /* 열릴 때 넓이 */
+}
+
+.content-sidebar .closebtn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    text-decoration: none;
+    cursor: pointer;
 }
