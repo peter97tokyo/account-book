@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import jp.peter.account.entity.Wallet;
+import java.util.List;
+
 
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
@@ -19,5 +21,7 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
        @Query(value = "SELECT SUM(money) FROM wallet WHERE year = :year AND month = :month AND deposit_withdrawal = :deposit_withdrawal", nativeQuery = true)
        Long findByYearAndMonthAndDepositWithdrawalNative(@Param("year") short year, @Param("month") byte month, @Param("deposit_withdrawal") boolean depositWithdrawal);
+
+       List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day);
        
 }

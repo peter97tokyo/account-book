@@ -1,0 +1,7 @@
+<div th:each="wallet : ${list}">
+    <div th:text="${wallet.createdDate}"></div>
+    <div th:text="${wallet.depositWithdrawal}">depositWithdrawal</div>
+    <div th:text="${wallet.type}"></div>
+    <div th:text="${wallet.money}"></div>
+    <div th:text="${wallet.memo}"></div>
+</div>

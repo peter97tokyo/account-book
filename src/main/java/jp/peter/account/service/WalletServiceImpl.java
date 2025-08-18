@@ -39,4 +39,9 @@ public class WalletServiceImpl implements WalletService {
     public Long findTotalInOut(short year, byte month, boolean depositWithdrawal) {
         return walletRepository.findByYearAndMonthAndDepositWithdrawalNative(year, month, depositWithdrawal);
     }
+
+    @Override
+    public List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day) {
+        return walletRepository.findByYearAndMonthAndDay(year, month, day);
+    }
 }

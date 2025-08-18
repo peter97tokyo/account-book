@@ -18,4 +18,6 @@ public interface WalletService {
     Long findDailyDepositByYearAndMonthAndDayNative(short year, byte month, byte day);
 
     Long findTotalInOut(short year, byte month, boolean depositWithdrawal);
+
+    List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day);
 }

@@ -38,8 +38,22 @@ function validateForm() {
     return true;
 }
 
-function openSidebar() {
+function openSidebar(year, month, day) {
     document.getElementById("contentSidebar").classList.add("open");
+    var choosedDate = year + "-" + month + "-" + day
+    $.ajax({
+        url: "/wallet",   
+        type: "GET",          
+        data: { choosedDate: choosedDate },      
+        dataType: "html",     
+        success: function(response) {
+            $("#walletHistory").html(response);
+        },
+        error: function(xhr, status, error) {
+            console.error("error:", error);
+        }
+    });
+    
 }
 
 function closeSidebar() {
@@ -47,7 +61,6 @@ function closeSidebar() {
 }
 
 window.onload = function() {
-    
     document.getElementById("walletForm").onsubmit = function() {
         return validateForm();
     }
