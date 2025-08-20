@@ -44,4 +44,9 @@ public class WalletServiceImpl implements WalletService {
     public List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day) {
         return walletRepository.findByYearAndMonthAndDay(year, month, day);
     }
+
+    @Override
+    public void deleteById(Long id) {
+        walletRepository.deleteById(id);
+    }
 }

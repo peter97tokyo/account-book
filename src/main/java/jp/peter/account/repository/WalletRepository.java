@@ -23,5 +23,7 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
        Long findByYearAndMonthAndDepositWithdrawalNative(@Param("year") short year, @Param("month") byte month, @Param("deposit_withdrawal") boolean depositWithdrawal);
 
        List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day);
+
+       void deleteById(Long id);
        
 }

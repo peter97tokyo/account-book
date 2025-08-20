@@ -1,7 +1,11 @@
 <div th:each="wallet : ${list}">
     
     <div th:if="${wallet.depositWithdrawal}" class="alert alert-success">
-        <span class="d-flex justify-content-end">x</span>
+        <span class="d-flex justify-content-end">
+            <a href="javascript:void(0)" 
+            class="delete-btn" 
+            th:onclick="|deleteWallet(${wallet.id} )|">×</a>
+        </span>
         <span class="d-flex justify-content-between">
             <span th:text="${#numbers.formatDecimal(wallet.money, 0, 'COMMA', 0, 'POINT')}"></span>
             <span th:text="${#temporals.format(wallet.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
@@ -18,7 +22,11 @@
             <span th:text="${wallet.memo}"></span>
     </div>
     <div th:if="${!wallet.depositWithdrawal}" class="alert alert-danger">
-        <span class="d-flex justify-content-end">x</span>
+        <span class="d-flex justify-content-end">
+            <a href="javascript:void(0)" 
+            class="delete-btn" 
+            th:onclick="|deleteWallet(${wallet.id} )|">×</a>
+        </span>
         <span class="d-flex justify-content-between">
             <span th:text="${#numbers.formatDecimal(wallet.money, 0, 'COMMA', 0, 'POINT')}"></span>
             <span th:text="${#temporals.format(wallet.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
@@ -31,7 +39,6 @@
             <span th:if="${wallet.type == 'gift'}" >Gift 🎁</span>
             <span th:if="${wallet.type == 'in'}" >deposit 💵</span>
             <span th:if="${wallet.type == 'etc'}" >Etc 📦</span>
-
         <br>
             <span th:text="${wallet.memo}"></span>
     </div>

@@ -8,12 +8,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jp.peter.account.dto.WalletDto;
 import jp.peter.account.entity.Wallet;
 import jp.peter.account.service.WalletService;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -58,12 +62,16 @@ public class WalletController {
         int month = Integer.parseInt(parts[1]); 
         int day = Integer.parseInt(parts[2]); 
 
-        System.out.println(year);
-        System.out.println(month);
-        System.out.println(day);
-
         List<Wallet> list = walletService.findByYearAndMonthAndDay((short) year,(byte) month,(byte) day);
         model.addAttribute("list", list);
         return "/wallet/list";    
+    }
+
+    @DeleteMapping("wallet/delete")
+    @ResponseBody
+    public String deleteWallet(@RequestBody WalletDto walletDto) {
+        Long id = walletDto.getId();
+        walletService.deleteById(id);
+        return "wallet history is deleted!!";
     }
 }

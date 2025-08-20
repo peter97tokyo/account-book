@@ -60,6 +60,25 @@ function closeSidebar() {
     document.getElementById("contentSidebar").classList.remove("open");
 }
 
+function deleteWallet(id) {
+    
+    if (!confirm("are you sure? do yo delete this wallet history?")) return;
+
+    $.ajax({
+        url: "/wallet/delete",
+        type: "DELETE",
+        contentType: "application/json",
+        data: JSON.stringify({ id: id }),
+        success: function (result) {
+            alert(result); 
+            location.reload(); 
+        },
+        error: function (xhr, status, error) {
+            alert("Fail delete: " + error);
+        }
+    });
+}
+
 window.onload = function() {
     document.getElementById("walletForm").onsubmit = function() {
         return validateForm();

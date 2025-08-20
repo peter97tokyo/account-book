@@ -107,6 +107,7 @@
 }
 
 .in-out-table {
+    margin-left: 10px;
     height: 100%;
 }
 
@@ -128,7 +129,7 @@
     width: 30%;              /* 열릴 때 넓이 */
 }
 
-.content-sidebar .closebtn {
+.content-sidebar .close-btn {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -138,6 +139,13 @@
     color: black;
 }
 
-.walletHistory {
+.wallet-history {
     margin: 10px;
+}
+
+.delete-btn {
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    color: black;
 }

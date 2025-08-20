@@ -20,4 +20,6 @@ public interface WalletService {
     Long findTotalInOut(short year, byte month, boolean depositWithdrawal);
 
     List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day);
+
+    void deleteById(Long id);
 }
