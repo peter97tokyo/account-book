@@ -111,7 +111,7 @@
 }
 
 .content-sidebar {
-    border: 1px solid black;
+    
     height: 100%;
     width: 0;                /* 처음에는 숨김 */
     position: fixed;
@@ -135,4 +135,9 @@
     font-size: 30px;
     text-decoration: none;
     cursor: pointer;
+    color: black;
+}
+
+.walletHistory {
+    margin: 10px;
 }
