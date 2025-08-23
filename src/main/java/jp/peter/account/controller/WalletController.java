@@ -74,4 +74,12 @@ public class WalletController {
         walletService.deleteById(id);
         return "wallet history is deleted!!";
     }
+
+    @GetMapping("/wallet/updateForm")
+    public String walletUpdateForm(@RequestParam Long id) { // /wallet/updateForm
+        System.out.println(id);
+        
+        return "/wallet/updateForm";
+    }
+    
 }
