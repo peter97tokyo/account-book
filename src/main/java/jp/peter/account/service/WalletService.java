@@ -1,6 +1,7 @@
 package jp.peter.account.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -22,4 +23,6 @@ public interface WalletService {
     List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day);
 
     void deleteById(Long id);
+
+    Optional<Wallet> findById(Long id);
 }

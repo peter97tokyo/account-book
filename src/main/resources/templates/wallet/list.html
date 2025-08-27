@@ -27,6 +27,11 @@
             class="delete-btn" 
             th:onclick="|deleteWallet(${wallet.id} )|">×</a>
         </span>
+        <span>
+            <a href="javascript:void(0)"
+            th:onclick="|updateWallet(${wallet.id} )|"
+            >수정</a>
+        </span>
         <span class="d-flex justify-content-between">
             <span th:text="${#numbers.formatDecimal(wallet.money, 0, 'COMMA', 0, 'POINT')}"></span>
             <span th:text="${#temporals.format(wallet.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>

@@ -1,6 +1,7 @@
 package jp.peter.account.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -48,5 +49,10 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public void deleteById(Long id) {
         walletRepository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Wallet> findById(Long id) {
+        return walletRepository.findById(id);
     }
 }

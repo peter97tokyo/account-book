@@ -79,6 +79,25 @@ function deleteWallet(id) {
     });
 }
 
+function updateWallet(id) {
+    $.ajax({
+        url: "/wallet/updateForm",
+        type: "POST",
+        dataType: "html",        
+        data: { id: id },        
+        success: function (response) {
+            $("#popupUpdtForm").html(response);
+        },
+        error: function (xhr, status, error) {
+            alert("Fail update form: " + error);
+        }
+    });
+}
+
+function closePopupUpdtForm() {
+    $("#popupUpdtForm").html("");
+}
+
 window.onload = function() {
     document.getElementById("walletForm").onsubmit = function() {
         return validateForm();

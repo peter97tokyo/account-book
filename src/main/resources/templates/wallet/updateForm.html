@@ -1,4 +1,5 @@
-<form action="./wallet" method="post" id="walletForm">
+<form action="./wallet/update" method="post" id="walletForm">
+    <input type="text" name="id" th:value="${wallet.id}">
     <div class="popup-bg">
         <div class="popup-wrap card">
             <div class="card-body">
@@ -9,38 +10,54 @@
                 </p>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Date</span>
-                    <input type="date" id="choosedDate" name="choosedDate" class="form-control" readonly>
+                    <input type="date" id="choosedDate" name="choosedDate" class="form-control" th:value="${choosedDate }" readonly>
                 </div>                        
                 <div class="input-group mb-3">
                     <span class="input-group-text">deposit/withdrawal</span>
                     <select class="form-select" name="depositWithdrawal">
-                        <option value="0">withdrawal 💸</option>
-                        <option value="1">deposit 💵</option>
+                        <option value="0"
+                                th:selected="${wallet.depositWithdrawal == false}">withdrawal 💸</option>
+                        <option value="1"
+                                th:selected="${wallet.depositWithdrawal == true}">deposit 💵</option>
                     </select>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Type</span>
                     <select class="form-select" name="type">
-                        <option value="rent">Monthly rent 🏠</option>
-                        <option value="util">Utilities 💄</option>
-                        <option value="food">Food cost 🍖</option>
-                        <option value="goods">Sundry goods 🧩</option>
-                        <option value="gift">Gift 🎁</option>
-                        <option value="in">deposit 💵</option>
-                        <option value="etc">Etc 📦</option>
+
+                        <option value="rent"
+                                th:selected="${wallet.type == 'rent'}">Monthly rent 🏠</option>
+
+                        <option value="util"
+                                th:selected="${wallet.type == 'util'}">Utilities 💄</option>
+
+                        <option value="food"
+                                th:selected="${wallet.type == 'food'}">Food cost 🍖</option>
+
+                        <option value="goods"
+                                th:selected="${wallet.type == 'goods'}">Sundry goods 🧩</option>
+
+                        <option value="gift"
+                                th:selected="${wallet.type == 'gift'}">Gift 🎁</option>
+
+                        <option value="in"
+                                th:selected="${wallet.type == 'in'}">deposit 💵</option>
+
+                        <option value="etc"
+                                th:selected="${wallet.type == 'etc'}">Etc 📦</option>
                     </select>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Money</span>
-                    <input type="number" class="form-control" name="money">
+                    <input type="number" class="form-control" name="money" th:value="${wallet.money}">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">Memo</span>
-                    <input type="text" class="form-control" name="memo">
+                    <input type="text" class="form-control" name="memo" th:value="${wallet.memo}">
                 </div>
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-dark" >OK</button>
-                    <button type="button" class="btn btn-dark" onclick="popupWallet(0,0,0)">NO</button>
+                    <button type="button" class="btn btn-dark" onclick="closePopupUpdtForm()">NO</button>
                 </div>
             </div>
         </div>

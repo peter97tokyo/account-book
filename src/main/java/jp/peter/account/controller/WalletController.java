@@ -2,6 +2,7 @@ package jp.peter.account.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -75,10 +76,17 @@ public class WalletController {
         return "wallet history is deleted!!";
     }
 
-    @GetMapping("/wallet/updateForm")
-    public String walletUpdateForm(@RequestParam Long id) { // /wallet/updateForm
-        System.out.println(id);
+    @PostMapping("/wallet/updateForm")
+    public String walletUpdateForm(@RequestParam("id") Long id, Model model) { 
+        Wallet wallet = walletService.findById(id)
+        .orElseThrow(() -> new RuntimeException("Wallet not found"));
+
         
+        String formattedDate = String.format("%04d-%02d-%02d",
+                wallet.getYear(), wallet.getMonth(), wallet.getDay());
+
+        model.addAttribute("choosedDate", formattedDate);
+        model.addAttribute("wallet", wallet);
         return "/wallet/updateForm";
     }
     
