@@ -19,6 +19,9 @@ import jp.peter.account.service.WalletService;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -88,6 +91,24 @@ public class WalletController {
         model.addAttribute("choosedDate", formattedDate);
         model.addAttribute("wallet", wallet);
         return "/wallet/updateForm";
+    }
+
+    @PutMapping("wallet/update")
+    public String walletUpdate(@ModelAttribute WalletDto walletDto) {
+
+        Long id = walletDto.getId();
+
+        Wallet updateWallet = walletService.findById(id)
+        .orElseThrow(() -> new RuntimeException("Wallet not found"));
+
+        updateWallet.setDepositWithdrawal(walletDto.getDepositWithdrawal());
+        updateWallet.setMemo(walletDto.getMemo());
+        updateWallet.setMoney(walletDto.getMoney());
+        updateWallet.setType(walletDto.getType());
+
+        walletService.save(updateWallet);
+
+        return "redirect:/accountBook";
     }
     
 }

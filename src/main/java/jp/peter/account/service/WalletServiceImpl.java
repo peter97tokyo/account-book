@@ -55,4 +55,5 @@ public class WalletServiceImpl implements WalletService {
     public Optional<Wallet> findById(Long id) {
         return walletRepository.findById(id);
     }
+
 }
