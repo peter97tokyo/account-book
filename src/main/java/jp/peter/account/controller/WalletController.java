@@ -2,9 +2,10 @@ package jp.peter.account.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +21,7 @@ import jp.peter.account.service.WalletService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 
@@ -32,19 +33,18 @@ public class WalletController {
     private WalletService walletService;
 
     @PostMapping("/wallet")
-    public String saveWallet(@ModelAttribute WalletDto walletDto) {
-
+    public ResponseEntity<?> saveWallet(@RequestBody WalletDto walletDto) {
         Wallet saveWallet = new Wallet();
-        
-        String dateStr = walletDto.getChoosedDate(); 
+
+        String dateStr = walletDto.getChoosedDate();
         String[] parts = dateStr.split("-");
 
-        int year = Integer.parseInt(parts[0]); 
-        int month = Integer.parseInt(parts[1]); 
-        int day = Integer.parseInt(parts[2]); 
+        int year = Integer.parseInt(parts[0]);
+        int month = Integer.parseInt(parts[1]);
+        int day = Integer.parseInt(parts[2]);
 
-        saveWallet.setYear((short) year);  
-        saveWallet.setMonth((byte) month); 
+        saveWallet.setYear((short) year);
+        saveWallet.setMonth((byte) month);
         saveWallet.setDay((byte) day);
 
         saveWallet.setMemo(walletDto.getMemo());
@@ -52,9 +52,12 @@ public class WalletController {
         saveWallet.setType(walletDto.getType());
         saveWallet.setDepositWithdrawal(walletDto.getDepositWithdrawal());
         saveWallet.setCreatedDate(LocalDateTime.now());
+
         walletService.save(saveWallet);
-        return "redirect:/accountBook";
+
+        return ResponseEntity.ok().body(Map.of("success", true));
     }
+
 
     @GetMapping("wallet")
     public String wallet(@ModelAttribute WalletDto walletDto, Model model) {

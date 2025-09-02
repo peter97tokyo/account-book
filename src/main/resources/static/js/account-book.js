@@ -25,19 +25,6 @@ function popupWallet(year, month, day) {
 }
 
 
-
-function validateForm() {
-    const form = document.getElementById("walletForm");
-
-    var moneyInput = form.money.value;
-
-    if (moneyInput == "" || moneyInput < 1 || moneyInput == null) {
-        alert('input money or needs bigger then 0')
-        return false;
-    }
-    return true;
-}
-
 function openSidebar(year, month, day) {
     document.getElementById("contentSidebar").classList.add("open");
     var choosedDate = year + "-" + month + "-" + day
@@ -99,7 +86,37 @@ function closePopupUpdtForm() {
 }
 
 window.onload = function() {
-    document.getElementById("walletForm").onsubmit = function() {
-        return validateForm();
-    }
+    $("#walletForm").on("submit", function(e) {
+        e.preventDefault(); 
+
+        const moneyInput = $.trim(this.money.value);
+        const money = Number(moneyInput);
+
+        if (!moneyInput || isNaN(money) || money < 1) {
+        alert("Please input a valid amount (greater than 0).");
+        return;
+        }
+
+        const formData = $(this).serializeArray();
+        const jsonData = {};
+        $.each(formData, function(_, field) {
+            jsonData[field.name] = field.value;
+        });
+
+        $.ajax({
+        url: "/wallet",
+        method: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(jsonData),
+        success: function() {
+            location.reload();
+            alert('Successfully saved.')
+        },
+        error: function(err) {
+            console.error(err);
+        }
+        });
+    });
+
+
 };
