@@ -1,10 +1,14 @@
 <div th:each="wallet : ${list}">
-    
     <div th:if="${wallet.depositWithdrawal}" class="alert alert-success">
-        <span class="d-flex justify-content-end">
+        <span class="d-flex justify-content-between">
+            
+            <a href="javascript:void(0)"
+                class="decoration-none link-primary" 
+                th:onclick="|popupWalletUpdtFrm(${wallet.id} )|">EDIT</a>
+
             <a href="javascript:void(0)" 
-            class="delete-btn" 
-            th:onclick="|deleteWallet(${wallet.id} )|">×</a>
+                class="decoration-none link-danger" 
+                th:onclick="|deleteWallet(${wallet.id} )|">DELETE</a>
         </span>
         <span class="d-flex justify-content-between">
             <span th:text="${#numbers.formatDecimal(wallet.money, 0, 'COMMA', 0, 'POINT')}"></span>
@@ -20,17 +24,17 @@
             <span th:if="${wallet.type == 'etc'}" >Etc 📦</span>
         <br>
             <span th:text="${wallet.memo}"></span>
+      
     </div>
     <div th:if="${!wallet.depositWithdrawal}" class="alert alert-danger">
-        <span class="d-flex justify-content-end">
-            <a href="javascript:void(0)" 
-            class="delete-btn" 
-            th:onclick="|deleteWallet(${wallet.id} )|">×</a>
-        </span>
-        <span>
+        <span class="d-flex justify-content-between">
             <a href="javascript:void(0)"
-            th:onclick="|popupWalletUpdtFrm(${wallet.id} )|"
-            >수정</a>
+            class="decoration-none link-primary" 
+            th:onclick="|popupWalletUpdtFrm(${wallet.id} )|">EDIT</a>
+
+            <a href="javascript:void(0)" 
+            class="decoration-none link-danger" 
+            th:onclick="|deleteWallet(${wallet.id} )|">DELETE</a>
         </span>
         <span class="d-flex justify-content-between">
             <span th:text="${#numbers.formatDecimal(wallet.money, 0, 'COMMA', 0, 'POINT')}"></span>

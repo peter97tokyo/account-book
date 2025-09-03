@@ -1,4 +1,4 @@
-.calender-field {
+.calendar-field {
     display: flex;
     justify-content: center;
     padding-top: 10px;
@@ -25,7 +25,7 @@
     line-height: 1;
 }
 
-.blank-calender-field {
+.blank-calendar-field {
     width: 80%;
 }
 
@@ -143,9 +143,6 @@
     margin: 10px;
 }
 
-.delete-btn {
-    font-size: 20px;
+.decoration-none {
     text-decoration: none;
-    cursor: pointer;
-    color: black;
 }

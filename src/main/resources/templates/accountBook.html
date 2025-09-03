@@ -13,22 +13,26 @@
 </head>
 <body>
     <main class="container">
-        <section class="calender-field">
+        <section class="link-field">
+            <a href="/" class="decoration-none">HOME 🏠</a>
+            <a class="decoration-none">LIST 📔</a>
+            <a class="decoration-none">GRAPH 📈</a>
+        </section>
+        <section class="calendar-field">
             <div class="d-flex justify-content-start previous-field">
-                <form action="/accountBook" method="post" class="box-inline">
+                <form action="/accountBook/calendar" method="post" class="box-inline">
                     <input type="hidden" name="year" th:value="${month == 1 ? year - 1 : year}" />
                     <input type="hidden" name="month" th:value="${month == 1 ? 12 : month - 1}" />
                     <button type="submit" class="btn btn-dark font-weight-bold btn-height-hundred">&lt;&lt;</button>
                 </form>
             </div>
-
             <div class="year-container">
                 <div th:text="${year}" class="year-field">year</div>
             </div>
             <div class="month-container">
                 <div th:text="${month}" class="month-field">month</div>
             </div>
-            <div class="blank-calender-field">
+            <div class="blank-calendar-field">
                 <table class="in-out-table">
                     <tr>
                         <th>In</th>
@@ -45,7 +49,7 @@
                 </table>
             </div>
             <div class="d-flex justify-content-end next-field">
-                <form action="/accountBook" method="post" class="box-inline">
+                <form action="/accountBook/calendar" method="post" class="box-inline">
                     <input type="hidden" name="year" th:value="${month == 12 ? year + 1 : year}" />
                     <input type="hidden" name="month" th:value="${month == 12 ? 1 : month + 1}" />
                     <button type="submit" class="btn btn-dark font-weight-bold btn-height-hundred">&gt;&gt;</button>

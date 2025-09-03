@@ -22,7 +22,7 @@ public class AccountBookController {
     @Autowired
     private WalletService walletService;
     
-    @GetMapping("/accountBook")
+    @GetMapping("/accountBook/calendar")
     public String accountBook(Model model) {
         Date today = new Date();
 
@@ -92,7 +92,7 @@ public class AccountBookController {
         return "accountBook"; 
     }
 
-    @PostMapping("/accountBook")
+    @PostMapping("/accountBook/calendar")
     public String accountBook(@RequestParam(required = false) Integer year,
                             @RequestParam(required = false) Integer month,
                             Model model) {
