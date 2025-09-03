@@ -1,4 +1,5 @@
-<form action="./wallet/update" method="post" >
+
+<form action="./wallet/update" method="post" id="walletUpdtFrm">
     <input type="hidden" name="_method" value="put"/>
     <input type="text" name="id" th:value="${wallet.id}">
     <div class="popup-bg">
@@ -16,9 +17,9 @@
                 <div class="input-group mb-3">
                     <span class="input-group-text">deposit/withdrawal</span>
                     <select class="form-select" name="depositWithdrawal">
-                        <option value="0"
+                        <option value="false"
                                 th:selected="${wallet.depositWithdrawal == false}">withdrawal 💸</option>
-                        <option value="1"
+                        <option value="true"
                                 th:selected="${wallet.depositWithdrawal == true}">deposit 💵</option>
                     </select>
                 </div>

@@ -66,14 +66,14 @@ function deleteWallet(id) {
     });
 }
 
-function updateWallet(id) {
+function popupWalletUpdtFrm(id) {
     $.ajax({
         url: "/wallet/updateForm",
         type: "POST",
         dataType: "html",        
         data: { id: id },        
-        success: function (response) {
-            $("#popupUpdtForm").html(response);
+        success: function (result) {
+            $("#popupUpdtForm").html(result);
         },
         error: function (xhr, status, error) {
             alert("Fail update form: " + error);
@@ -93,8 +93,8 @@ window.onload = function() {
         const money = Number(moneyInput);
 
         if (!moneyInput || isNaN(money) || money < 1) {
-        alert("Please input a valid amount (greater than 0).");
-        return;
+            alert("Please input a valid amount (greater than 0).");
+            return;
         }
 
         const formData = $(this).serializeArray();
@@ -104,19 +104,51 @@ window.onload = function() {
         });
 
         $.ajax({
-        url: "/wallet",
-        method: "POST",
+            url: "/wallet",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(jsonData),
+            success: function() {
+                location.reload();
+                alert('Successfully saved.')
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    });
+    
+};
+
+// 문서 전체에서 submit 이벤트 감지
+$(document).on("submit", "#walletUpdtFrm", function(e) {
+    e.preventDefault(); 
+
+    const moneyInput = $.trim(this.money.value);
+    const money = Number(moneyInput);
+
+    if (!moneyInput || isNaN(money) || money < 1) {
+        alert("Please input a valid amount (greater than 0).");
+        return;
+    }
+
+    const formData = $(this).serializeArray();
+    const jsonData = {};
+    $.each(formData, function(_, field) {
+        jsonData[field.name] = field.value;
+    });
+
+    $.ajax({
+        url: "/wallet/update",
+        method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(jsonData),
         success: function() {
+            alert('Successfully updated.');
             location.reload();
-            alert('Successfully saved.')
         },
         error: function(err) {
             console.error(err);
         }
-        });
     });
-
-
-};
+});

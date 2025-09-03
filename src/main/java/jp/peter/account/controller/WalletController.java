@@ -97,7 +97,7 @@ public class WalletController {
     }
 
     @PutMapping("wallet/update")
-    public String walletUpdate(@ModelAttribute WalletDto walletDto) {
+    public ResponseEntity<?> walletUpdate(@RequestBody WalletDto walletDto) {
 
         Long id = walletDto.getId();
 
@@ -108,10 +108,10 @@ public class WalletController {
         updateWallet.setMemo(walletDto.getMemo());
         updateWallet.setMoney(walletDto.getMoney());
         updateWallet.setType(walletDto.getType());
-
+        updateWallet.setUpdatedDate(LocalDateTime.now());
         walletService.save(updateWallet);
 
-        return "redirect:/accountBook";
+        return ResponseEntity.ok().body(Map.of("success", true));
     }
     
 }
