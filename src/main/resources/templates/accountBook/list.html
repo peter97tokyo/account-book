@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCOUNT BOOK LIST</title>
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/account-book.css">
+    
+    <script src="/js/jquery/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/js/account-book.js"></script>
+</head>
+<body>
+    <main class="container">
+        <section class="d-flex justify-content-between link-field">
+            <a href="/" class="decoration-none link-dark">HOME 🏠</a>
+            <div>
+                <a href="/accountBook/calendar" class="decoration-none link-dark">CALENDAR 🗓️</a>
+                <a class="decoration-none link-dark">GRAPH 📈</a>
+            </div>
+        </section>
+    
+    <div class="m-4 text-end d-flex justify-content-center align-items-center gap-2 flex-wrap">
+
+        <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">
+        
+        <select class="form-select w-auto" name="depositWithdrawal">
+            <option value="">ALL</option>
+            <option value="false">withdrawal 💸</option>
+            <option value="true">deposit 💵</option>
+        </select>        
+
+        <select class="form-select w-auto" name="type">
+            <option value="">ALL</option>
+            <option value="rent">Monthly rent 🏠</option>
+            <option value="util">Utilities 💄</option>
+            <option value="food">Food cost 🍖</option>
+            <option value="goods">Sundry goods 🧩</option>
+            <option value="gift">Gift 🎁</option>
+            <option value="in">deposit 💵</option>
+            <option value="etc">Etc 📦</option>
+        </select>
+
+        <input type="date" id="startDate" class="form-control w-auto">
+
+        <input type="date" id="endDate" class="form-control w-auto">
+
+        <button type="button" class="btn btn-primary">SEARCH</button>
+    </div>
+
+        <table class="table table-bordered text-center" id="accountTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>DATE</th>
+                    <th>IN&OUT</th>
+                    <th>TYPE</th>
+                    <th>MEMO</th>
+                    <th>MONEY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${paging}">
+                    <td th:text="${item.year + '-' + item.month + '-' + item.day}">2025-09-01</td>
+                    <td>
+                        <div th:if="${item.depositWithdrawal == true}">IN</div>
+                        <div th:unless="${item.depositWithdrawal == true}">OUT</div>
+                    </td>
+                    <td>
+                        <div th:if="${item.type == 'rent'}">Monthly rent 🏠</div>
+                        <div th:if="${item.type == 'util'}">Utilities 💄</div>
+                        <div th:if="${item.type == 'food'}">Food cost 🍖</div>
+                        <div th:if="${item.type == 'goods'}">Sundry goods 🧩</div>
+                        <div th:if="${item.type == 'gift'}">Gift 🎁</div>
+                        <div th:if="${item.type == 'in'}">deposit 💵</div>
+                        <div th:if="${item.type == 'etc'}">Etc 📦</div>
+                    </td>
+                    <td>
+                        <span class="showToast" th:title="${item.memo}"> 
+                            Show
+                        </span> 
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(item.money, 0, 'COMMA', 0, 'POINT')}">1000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <nav th:if="${!paging.isEmpty()}">
+            <ul class="pagination justify-content-center" id="pagination">
+                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                    <a class="page-link"
+                        th:href="@{|?page=${paging.number-1}|}">
+                        <span>이전</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                    th:classappend="${page == paging.number} ? 'active'" 
+                    class="page-item">
+                    <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                        <span>다음</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        
+        <section>
+            <div class="toast " id="toast">
+                <div class="toast-header">
+                    MEMO
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body" id="toastBody">
+                    
+                </div>
+            </div>
+        </section>  
+
+    </main>
+</body>
+</html>

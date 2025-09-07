@@ -85,6 +85,12 @@ function closePopupUpdtForm() {
     $("#popupUpdtForm").html("");
 }
 
+function showToast(e) {
+    var mouseX = e.pageX;
+    var mouseY = e.pageY;
+    console.log('클릭 위치: X=' + mouseX + ', Y=' + mouseY);
+}
+
 window.onload = function() {
     $("#walletForm").on("submit", function(e) {
         e.preventDefault(); 
@@ -118,9 +124,19 @@ window.onload = function() {
         });
     });
     
+    
+    $(".showToast").click(function(e) {
+        var mouseX = e.pageX;
+        var mouseY = e.pageY;
+        var title = $(this).attr('title');
+        $('#toastBody').html(title)
+        $('#toast').addClass('show')
+        $("#toast").offset({ top: mouseY, left: mouseX });
+    });
+    
 };
 
-// 문서 전체에서 submit 이벤트 감지
+
 $(document).on("submit", "#walletUpdtFrm", function(e) {
     e.preventDefault(); 
 

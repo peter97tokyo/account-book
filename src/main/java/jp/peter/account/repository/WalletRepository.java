@@ -3,13 +3,16 @@
 package jp.peter.account.repository;
 
 
+
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import jp.peter.account.entity.Wallet;
 import java.util.List;
-import java.util.Optional;
 
 
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
@@ -26,5 +29,7 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
        List<Wallet> findByYearAndMonthAndDay(short year, byte month, byte day);
 
        void deleteById(Long id);
+
+       Page<Wallet> findAll(Pageable pageable);
        
 }

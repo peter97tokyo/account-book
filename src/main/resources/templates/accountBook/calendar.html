@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACCOUNT BOOK</title>
+    <title>ACCOUNT BOOK CALENDAR</title>
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/css/account-book.css">
     
@@ -13,11 +13,14 @@
 </head>
 <body>
     <main class="container">
-        <section class="link-field">
-            <a href="/" class="decoration-none">HOME 🏠</a>
-            <a class="decoration-none">LIST 📔</a>
-            <a class="decoration-none">GRAPH 📈</a>
+         <section class="d-flex justify-content-between link-field">
+            <a href="/" class="decoration-none link-dark">HOME 🏠</a>
+            <div>
+                <a href="/accountBook/list" class="decoration-none link-dark">LIST 📔</a>
+                <a class="decoration-none link-dark">GRAPH 📈</a>
+            </div>
         </section>
+
         <section class="calendar-field">
             <div class="d-flex justify-content-start previous-field">
                 <form action="/accountBook/calendar" method="post" class="box-inline">

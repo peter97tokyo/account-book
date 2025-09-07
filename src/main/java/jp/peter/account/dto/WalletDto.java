@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class WalletDto {
+public class WalletDto extends SearchDto{
 
     private Long id;
 

@@ -3,6 +3,9 @@ package jp.peter.account.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jp.peter.account.entity.Wallet;
@@ -54,6 +57,12 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Optional<Wallet> findById(Long id) {
         return walletRepository.findById(id);
+    }
+
+    @Override
+    public Page<Wallet> getPage(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return walletRepository.findAll(pageable);
     }
 
 }

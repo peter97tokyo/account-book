@@ -7,13 +7,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.peter.account.entity.Wallet;
 import jp.peter.account.service.WalletService;
 
 @Controller
@@ -23,7 +27,7 @@ public class AccountBookController {
     private WalletService walletService;
     
     @GetMapping("/accountBook/calendar")
-    public String accountBook(Model model) {
+    public String calendar(Model model) {
         Date today = new Date();
 
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
@@ -89,11 +93,11 @@ public class AccountBookController {
         model.addAttribute("dailyWithdrawal", dailyWithdrawal);
         model.addAttribute("dailyDeposit", dailyDeposit);
         
-        return "accountBook"; 
+        return "accountBook/calendar"; 
     }
 
     @PostMapping("/accountBook/calendar")
-    public String accountBook(@RequestParam(required = false) Integer year,
+    public String calendar(@RequestParam(required = false) Integer year,
                             @RequestParam(required = false) Integer month,
                             Model model) {
         // 현재 날짜 기준 기본값 설정
@@ -161,7 +165,14 @@ public class AccountBookController {
         model.addAttribute("weeks", weeks);
         model.addAttribute("dailyWithdrawal", dailyWithdrawal);
         model.addAttribute("dailyDeposit", dailyDeposit);
-        return "accountBook";
+        return "accountBook/calendar";
+    }
+
+    @GetMapping("/accountBook/list")
+    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
+        Page<Wallet> paging = walletService.getPage(page);
+        model.addAttribute("paging", paging);
+        return "accountBook/list"; 
     }
 
 }

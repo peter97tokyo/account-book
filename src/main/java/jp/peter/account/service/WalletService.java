@@ -3,6 +3,7 @@ package jp.peter.account.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import jp.peter.account.entity.Wallet;
@@ -25,5 +26,7 @@ public interface WalletService {
     void deleteById(Long id);
 
     Optional<Wallet> findById(Long id);
+
+    Page<Wallet> getPage(int page);
 
 }
