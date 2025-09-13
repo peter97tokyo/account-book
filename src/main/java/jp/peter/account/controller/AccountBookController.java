@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.aspectj.weaver.patterns.TypePatternQuestions.Question;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -100,7 +99,7 @@ public class AccountBookController {
     public String calendar(@RequestParam(required = false) Integer year,
                             @RequestParam(required = false) Integer month,
                             Model model) {
-        // 현재 날짜 기준 기본값 설정
+
         LocalDate today = LocalDate.now();
 
         if (year == null || month == null) {
@@ -108,10 +107,8 @@ public class AccountBookController {
             month = today.getMonthValue();
         }
 
-        // 해당 월의 1일
         LocalDate startDate = LocalDate.of(year, month, 1);
 
-        // 요일 (1=월요일, 7=일요일)
         DayOfWeek week = startDate.getDayOfWeek();
         int firstDayWeek = week.getValue();
 
@@ -175,4 +172,9 @@ public class AccountBookController {
         return "accountBook/list"; 
     }
 
+    @GetMapping("/accountBook/graph")
+    public String graph(Model model) {
+        
+        return "accountBook/graph"; 
+    }
 }
