@@ -10,18 +10,156 @@
     <script src="/js/jquery/jquery-3.6.0.min.js"></script>
     <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="/js/account-book.js"></script>
+    <script src="/js/charts/loader.js"></script>
 </head>
+<script>
+google.load('visualization', '1', { packages : [ 'corechart' ]});
+google.setOnLoadCallback(drawChart);
+
+function drawChart(){
+    // 표시할 데이터 설정
+	var data = new google.visualization.DataTable();
+	data.addColumn('string', '월');
+	data.addColumn('number', '지출');
+    data.addColumn('number', '소득');
+	
+	
+	data.addRows([
+	    ["1월",  250,  320],  // 연초는 소비 많음 (명절, 신년 등)
+        ["2월",  220,  310], 
+        ["3월",  270,  330], 
+        ["4월",  240,  340], 
+        ["5월",  300,  350],  // 가정의 달 → 지출 증가
+        ["6월",  260,  345], 
+        ["7월",  310,  360],  // 여름휴가 시즌
+        ["8월",  280,  355], 
+        ["9월",  330,  365],  // 추석 명절 소비
+        ["10월", 260,  360], 
+        ["11월", 280,  370],  // 블랙프라이데이, 쇼핑 ↑
+        ["12월", 350,  380]   // 연말 송년회, 선물 등 지출↑
+
+	]);
+	
+	var option = {
+		title: 'GRAPH',
+		width: '100%',
+		height: '100%',
+		series: [
+			{ type: 'line', targetAxisIndex: 0 },
+			{ type: 'bars', targetAxisIndex: 1 }
+			
+		],
+		vAxes: [
+            { title: '지출' },
+			{ title: '소득' },
+            
+		]
+	};
+	
+	var chart = new google.visualization.ComboChart(document.getElementById('chart'));
+	chart.draw(data, option);
+}
+</script>
 <body>
     <main class="container">
         <section class="d-flex justify-content-between link-field">
             <a href="/" class="decoration-none link-dark">HOME 🏠</a>
             <div>
                 <a href="/accountBook/calendar" class="decoration-none link-dark">CALENDAR 🗓️</a>
-                <a class="decoration-none link-dark">GRAPH 📈</a>
+                <a href="/accountBook/list" class="decoration-none link-dark">LIST 📔</a>
+                <a href="/accountBook/graph" class="decoration-none link-dark">GRAPH 📈</a>
             </div>
         </section>
-    
-     
+
+        <section class="table-section my-4 p-3 bg-light rounded shadow-sm">
+            <h2 class="text-center mb-3">소득 및 지출</h2>
+            <table class="table table-bordered text-center" id="accountTable">
+                <thead class="table-dark">
+                    <tr>
+                        <th></th>
+                        <th>1월</th>
+                        <th>2월</th>
+                        <th>3월</th>
+                        <th>4월</th>
+                        <th>5월</th>
+                        <th>6월</th>
+                        <th>7월</th>
+                        <th>8월</th>
+                        <th>9월</th>
+                        <th>10월</th>
+                        <th>11월</th>
+                        <th>12월</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>지출</td>
+                        <td>250</td>
+                        <td>220</td>
+                        <td>270</td>
+                        <td>240</td>
+                        <td>300</td>
+                        <td>260</td>
+                        <td>310</td>
+                        <td>280</td>
+                        <td>330</td>
+                        <td>260</td>
+                        <td>280</td>
+                        <td>350</td>
+                    </tr>
+                    <tr>
+                        <td>소득</td>
+                        <td>320</td>
+                        <td>310</td>
+                        <td>330</td>
+                        <td>340</td>
+                        <td>350</td>
+                        <td>345</td>
+                        <td>360</td>
+                        <td>355</td>
+                        <td>365</td>
+                        <td>360</td>
+                        <td>370</td>
+                        <td>380</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+        <section class="d-flex justify-content-around my-4">
+            <div class="card text-center shadow-sm" style="width: 200px;">
+                <div class="card-body bg-light text-dark rounded">
+                <h5 class="card-title">총 지출</h5>
+                <p class="card-text fw-bold">3,290</p>
+                </div>
+            </div>
+            <div class="card text-center shadow-sm" style="width: 200px;">
+                <div class="card-body bg-light text-dark rounded">
+                <h5 class="card-title">평균지출</h5>
+                <p class="card-text fw-bold">3,290</p>
+                </div>
+            </div>
+            <div class="card text-center shadow-sm" style="width: 200px;">
+                <div class="card-body bg-light text-dark rounded">
+                <h5 class="card-title">총 소득</h5>
+                <p class="card-text fw-bold">4,160</p>
+                </div>
+            </div>
+            <div class="card text-center shadow-sm" style="width: 200px;">
+                <div class="card-body bg-light text-dark rounded">
+                <h5 class="card-title">평균소득</h5>
+                <p class="card-text fw-bold">3,290</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="graph-section my-4 p-3 bg-light rounded shadow-sm">
+            <h2 class="text-center mb-3">월별 그래프</h2>
+            <div id="chart" style="width: 100%; height: 400px;"></div>    
+        </section>
+        
+        
     </main>
 </body>
 </html>
