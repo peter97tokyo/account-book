@@ -12,15 +12,9 @@
     <script src="/js/account-book.js"></script>
 </head>
 <body>
+    <div th:insert="fragment/header :: site-header"></div>
+
     <main class="container">
-         <section class="d-flex justify-content-between link-field">
-            <a href="/" class="decoration-none link-dark">HOME 🏠</a>
-            <div>
-                <a href="/accountBook/calendar" class="decoration-none link-dark">CALENDAR 🗓️</a>
-                <a href="/accountBook/list" class="decoration-none link-dark">LIST 📔</a>
-                <a href="/accountBook/graph" class="decoration-none link-dark">GRAPH 📈</a>
-            </div>
-        </section>
 
         <section class="calendar-field">
             <div class="d-flex justify-content-start previous-field">
@@ -175,5 +169,7 @@
         
 
     </main>
+    <div th:insert="fragment/footer :: site-footer"></div>
+
 </body>
 </html>

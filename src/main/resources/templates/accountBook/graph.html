@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ACCOUNT BOOK LIST</title>
+    <title>ACCOUNT BOOK GRAPH</title>
     <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="/css/account-book.css">
     
@@ -61,16 +61,9 @@ function drawChart(){
 }
 </script>
 <body>
-    <main class="container">
-        <section class="d-flex justify-content-between link-field">
-            <a href="/" class="decoration-none link-dark">HOME 🏠</a>
-            <div>
-                <a href="/accountBook/calendar" class="decoration-none link-dark">CALENDAR 🗓️</a>
-                <a href="/accountBook/list" class="decoration-none link-dark">LIST 📔</a>
-                <a href="/accountBook/graph" class="decoration-none link-dark">GRAPH 📈</a>
-            </div>
-        </section>
+    <div th:insert="fragment/header :: site-header"></div>
 
+    <main class="container">
         <section class="table-section my-4 p-3 bg-light rounded shadow-sm">
             <h2 class="text-center mb-3">소득 및 지출</h2>
             <table class="table table-bordered text-center" id="accountTable">
@@ -157,9 +150,9 @@ function drawChart(){
         <section class="graph-section my-4 p-3 bg-light rounded shadow-sm">
             <h2 class="text-center mb-3">월별 그래프</h2>
             <div id="chart" style="width: 100%; height: 400px;"></div>    
-        </section>
-        
-        
+        </section>     
     </main>
+   
+    <div th:insert="fragment/footer :: site-footer"></div>
 </body>
 </html>

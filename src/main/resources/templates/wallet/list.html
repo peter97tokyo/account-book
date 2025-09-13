@@ -3,11 +3,11 @@
         <span class="d-flex justify-content-between">
             
             <a href="javascript:void(0)"
-                class="decoration-none link-primary" 
+                class="text-decoration-none link-primary" 
                 th:onclick="|popupWalletUpdtFrm(${wallet.id} )|">EDIT</a>
 
             <a href="javascript:void(0)" 
-                class="decoration-none link-danger" 
+                class="text-decoration-none link-danger" 
                 th:onclick="|deleteWallet(${wallet.id} )|">DELETE</a>
         </span>
         <span class="d-flex justify-content-between">
@@ -29,11 +29,11 @@
     <div th:if="${!wallet.depositWithdrawal}" class="alert alert-danger">
         <span class="d-flex justify-content-between">
             <a href="javascript:void(0)"
-            class="decoration-none link-primary" 
+            class="text-decoration-none link-primary" 
             th:onclick="|popupWalletUpdtFrm(${wallet.id} )|">EDIT</a>
 
             <a href="javascript:void(0)" 
-            class="decoration-none link-danger" 
+            class="text-decoration-none link-danger" 
             th:onclick="|deleteWallet(${wallet.id} )|">DELETE</a>
         </span>
         <span class="d-flex justify-content-between">
