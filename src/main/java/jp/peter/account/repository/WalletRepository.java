@@ -35,4 +35,10 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
        @Query(value = "SELECT year, month, SUM(money) FROM wallet WHERE deposit_withdrawal = :deposit_withdrawal AND year = :year GROUP BY year, month", nativeQuery = true)
        List<Object[]> sumMoneyByYearAndMonth(@Param("year") short year, @Param("deposit_withdrawal") boolean depositWithdrawal);
 
-}
+       @Query(value = "SELECT SUM(money) FROM wallet WHERE year = :year AND deposit_withdrawal = :deposit_withdrawal", nativeQuery = true)
+       Long sumMoneyByDepositWithdrawal(@Param("year") short year, @Param("deposit_withdrawal") boolean depositWithdrawal);
+
+       @Query(value = "SELECT AVG(money) FROM wallet WHERE year = :year AND deposit_withdrawal = :deposit_withdrawal", nativeQuery = true)
+       Long avgMoneyByDepositWithdrawal(@Param("year") short year, @Param("deposit_withdrawal") boolean depositWithdrawal);
+       
+}      

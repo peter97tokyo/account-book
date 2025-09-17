@@ -99,5 +99,15 @@ public class WalletServiceImpl implements WalletService {
         }
         return result;
     }
+
+    @Override
+    public Long sumMoneyForOneYear(short year, boolean depositWithdrawal) {
+        return walletRepository.sumMoneyByDepositWithdrawal(year, depositWithdrawal);
+    }
+    
+    @Override
+    public Long avgMoneyForOneYear(short year, boolean depositWithdrawal) {
+        return walletRepository.avgMoneyByDepositWithdrawal(year, depositWithdrawal);
+    }
     
 }

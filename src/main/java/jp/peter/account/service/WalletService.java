@@ -32,4 +32,8 @@ public interface WalletService {
 
     List<WalletDto> sumMoneyByYearAndMonth(short year, boolean depositWithdrawal);
 
+    Long sumMoneyForOneYear(short year, boolean depositWithdrawal);
+    
+    Long avgMoneyForOneYear(short year, boolean depositWithdrawal);
+    
 }

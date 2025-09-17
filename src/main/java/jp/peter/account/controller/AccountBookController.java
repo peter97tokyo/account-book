@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -182,10 +182,24 @@ public class AccountBookController {
         int year = Integer.valueOf(yearFormat.format(today));
 
         List<WalletDto> sumDeposit = walletService.sumMoneyByYearAndMonth((short) year, true); // in
+        long cntDeposit = sumDeposit.stream().filter(Objects::nonNull).count();
         List<WalletDto> sumWithdrawal = walletService.sumMoneyByYearAndMonth((short) year, false); // out
+        long cntWithdrawal = sumWithdrawal.stream().filter(Objects::nonNull).count();
+
+        Long sumDepositOneYear = walletService.sumMoneyForOneYear((short)year, true); // in
         
+        Long sumWithdrawalOneYear = walletService.sumMoneyForOneYear((short)year, false); // out
+        Long avgWithdrawalOneYear = walletService.avgMoneyForOneYear((short)year, false); // out
+
         model.addAttribute("sumDeposit", sumDeposit);
+        model.addAttribute("cntDeposit", cntDeposit);
         model.addAttribute("sumWithdrawal", sumWithdrawal);
+        model.addAttribute("cntWithdrawal", cntWithdrawal);
+
+        model.addAttribute("sumDepositOneYear", sumDepositOneYear);
+        model.addAttribute("sumWithdrawalOneYear", sumWithdrawalOneYear);
+        model.addAttribute("avgWithdrawalOneYear", avgWithdrawalOneYear);
+
         model.addAttribute("year", year);
     
         return "accountBook/graph"; 

@@ -103,10 +103,6 @@ function drawChart(){
                     <tr>
                         <td>지출</td>
                         <td th:each="out : ${sumWithdrawal}" th:text="${out != null ? #numbers.formatDecimal((out.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"></td>
-
-
-                                                
-
                     </tr>
                     <tr>
                         <td>소득</td>
@@ -120,26 +116,32 @@ function drawChart(){
         <section class="d-flex justify-content-around my-4">
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
+                <h5 class="card-title">하루 평균지출</h5>
+                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((avgWithdrawalOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
+                </div>
+            </div>
+            <div class="card text-center shadow-sm" style="width: 200px;">
+                <div class="card-body bg-light text-dark rounded">
+                <h5 class="card-title">한달 평균지출</h5>
+                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(( (sumWithdrawalOneYear / cntWithdrawal) ?:0), 0, 'COMMA', 0, 'POINT')}"></p>
+                </div>
+            </div>
+            <div class="card text-center shadow-sm" style="width: 200px;">
+                <div class="card-body bg-light text-dark rounded">
                 <h5 class="card-title">총 지출</h5>
-                <p class="card-text fw-bold">3,290</p>
+                <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((sumWithdrawalOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
-                <h5 class="card-title">평균지출</h5>
-                <p class="card-text fw-bold">3,290</p>
+                    <h5 class="card-title">한달 평균소득</h5>
+                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(( (sumDepositOneYear / cntDeposit) ?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
-                <h5 class="card-title">총 소득</h5>
-                <p class="card-text fw-bold">4,160</p>
-                </div>
-            </div>
-            <div class="card text-center shadow-sm" style="width: 200px;">
-                <div class="card-body bg-light text-dark rounded">
-                <h5 class="card-title">평균소득</h5>
-                <p class="card-text fw-bold">3,290</p>
+                    <h5 class="card-title">총 소득</h5>
+                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((sumDepositOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
         </section>
