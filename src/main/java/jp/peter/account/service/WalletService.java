@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import jp.peter.account.dto.WalletDto;
 import jp.peter.account.entity.Wallet;
 
 @Service 
@@ -28,5 +29,7 @@ public interface WalletService {
     Optional<Wallet> findById(Long id);
 
     Page<Wallet> getPage(int page);
+
+    List<WalletDto> sumMoneyByYearAndMonth(short year, boolean depositWithdrawal);
 
 }

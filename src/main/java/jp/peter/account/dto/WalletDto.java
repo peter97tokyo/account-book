@@ -25,4 +25,8 @@ public class WalletDto extends SearchDto{
 
     private LocalDateTime updatedDate;
 
+    private Long year;
+
+    private Long month;
+
 }

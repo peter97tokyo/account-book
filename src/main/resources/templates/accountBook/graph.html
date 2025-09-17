@@ -62,11 +62,26 @@ function drawChart(){
 </script>
 <body>
     <div th:insert="fragment/header :: site-header"></div>
-
+    
     <main class="container">
         <section class="table-section my-4 p-3 bg-light rounded shadow-sm">
             <h2 class="text-center mb-3">소득 및 지출</h2>
-            <table class="table table-bordered text-center" id="accountTable">
+            <table class="table table-bordered text-center fixed-table" id="accountTable">
+                 <colgroup>
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                    <col style="width: 7.6%;">
+                </colgroup>
                 <thead class="table-dark">
                     <tr>
                         <th></th>
@@ -87,33 +102,15 @@ function drawChart(){
                 <tbody>
                     <tr>
                         <td>지출</td>
-                        <td>250</td>
-                        <td>220</td>
-                        <td>270</td>
-                        <td>240</td>
-                        <td>300</td>
-                        <td>260</td>
-                        <td>310</td>
-                        <td>280</td>
-                        <td>330</td>
-                        <td>260</td>
-                        <td>280</td>
-                        <td>350</td>
+                        <td th:each="out : ${sumWithdrawal}" th:text="${out != null ? #numbers.formatDecimal((out.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"></td>
+
+
+                                                
+
                     </tr>
                     <tr>
                         <td>소득</td>
-                        <td>320</td>
-                        <td>310</td>
-                        <td>330</td>
-                        <td>340</td>
-                        <td>350</td>
-                        <td>345</td>
-                        <td>360</td>
-                        <td>355</td>
-                        <td>365</td>
-                        <td>360</td>
-                        <td>370</td>
-                        <td>380</td>
+                        <td th:each="in : ${sumDeposit}" th:text="${in != null ? #numbers.formatDecimal((in.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"></td>
                     </tr>
                 </tbody>
             </table>

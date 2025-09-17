@@ -147,3 +147,7 @@
   border-bottom: 1px solid #ccc;
  
 }
+
+.one-year-table {
+    table-layout: fixed;
+}

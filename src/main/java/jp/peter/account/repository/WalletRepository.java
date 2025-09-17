@@ -32,4 +32,7 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
        Page<Wallet> findAll(Pageable pageable);
        
+       @Query(value = "SELECT year, month, SUM(money) FROM wallet WHERE deposit_withdrawal = :deposit_withdrawal AND year = :year GROUP BY year, month", nativeQuery = true)
+       List<Object[]> sumMoneyByYearAndMonth(@Param("year") short year, @Param("deposit_withdrawal") boolean depositWithdrawal);
+
 }

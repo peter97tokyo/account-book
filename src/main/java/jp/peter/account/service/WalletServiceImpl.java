@@ -1,5 +1,6 @@
 package jp.peter.account.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +9,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
+import jp.peter.account.dto.WalletDto;
 import jp.peter.account.entity.Wallet;
 import jp.peter.account.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
@@ -65,4 +68,36 @@ public class WalletServiceImpl implements WalletService {
         return walletRepository.findAll(pageable);
     }
 
+    @Override
+    public List<WalletDto> sumMoneyByYearAndMonth(short year, boolean depositWithdrawal) {
+        List<Object[]> items = walletRepository.sumMoneyByYearAndMonth(year, depositWithdrawal);
+        List<WalletDto> result = new ArrayList<WalletDto>();
+        WalletDto wallet = null;
+        int startNumber = 0;
+        int startNumberNeeds = 0;
+        if (items != null) {
+            startNumber = ((Number) items.get(0)[1]).intValue(); 
+            if (startNumber > 1) {
+                startNumberNeeds = startNumber - 1;
+            }
+        }
+        for (int i = 0; i < startNumberNeeds; i++) {
+            result.add(null);
+        }
+        for (Object[] item : items) {
+            wallet = new WalletDto();
+            wallet.setYear(((Number) item[0]).longValue());
+            wallet.setMonth(((Number) item[1]).longValue());
+            wallet.setMoney(((Number) item[2]).longValue());
+            result.add(wallet);
+        }
+        if (result.size() < 12) {
+            int lastNumberNeeds = 12 - result.size();
+            for (int i = 1; i <= lastNumberNeeds; i++) {
+                result.add(null);
+            }
+        }
+        return result;
+    }
+    
 }

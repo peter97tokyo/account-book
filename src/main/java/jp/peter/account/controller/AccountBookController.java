@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jp.peter.account.dto.WalletDto;
 import jp.peter.account.entity.Wallet;
 import jp.peter.account.service.WalletService;
 
@@ -174,7 +175,19 @@ public class AccountBookController {
 
     @GetMapping("/accountBook/graph")
     public String graph(Model model) {
+        Date today = new Date();
+
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+
+        int year = Integer.valueOf(yearFormat.format(today));
+
+        List<WalletDto> sumDeposit = walletService.sumMoneyByYearAndMonth((short) year, true); // in
+        List<WalletDto> sumWithdrawal = walletService.sumMoneyByYearAndMonth((short) year, false); // out
         
+        model.addAttribute("sumDeposit", sumDeposit);
+        model.addAttribute("sumWithdrawal", sumWithdrawal);
+        model.addAttribute("year", year);
+    
         return "accountBook/graph"; 
     }
 }
