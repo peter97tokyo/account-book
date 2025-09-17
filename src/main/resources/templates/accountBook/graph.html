@@ -17,29 +17,23 @@ google.load('visualization', '1', { packages : [ 'corechart' ]});
 google.setOnLoadCallback(drawChart);
 
 function drawChart(){
-    // 표시할 데이터 설정
 	var data = new google.visualization.DataTable();
 	data.addColumn('string', '월');
 	data.addColumn('number', '지출');
     data.addColumn('number', '소득');
 	
-	
-	data.addRows([
-	    ["1월",  250,  320],  // 연초는 소비 많음 (명절, 신년 등)
-        ["2월",  220,  310], 
-        ["3월",  270,  330], 
-        ["4월",  240,  340], 
-        ["5월",  300,  350],  // 가정의 달 → 지출 증가
-        ["6월",  260,  345], 
-        ["7월",  310,  360],  // 여름휴가 시즌
-        ["8월",  280,  355], 
-        ["9월",  330,  365],  // 추석 명절 소비
-        ["10월", 260,  360], 
-        ["11월", 280,  370],  // 블랙프라이데이, 쇼핑 ↑
-        ["12월", 350,  380]   // 연말 송년회, 선물 등 지출↑
+    const withdrawals = document.querySelectorAll('div.withdrawals input[data-month]');
+    const deposits = document.querySelectorAll('div.deposits input[data-month]');
 
-	]);
-	
+    const rows = [];
+    for (let i = 0; i < withdrawals.length; i++) {
+        const month = withdrawals[i].dataset.month + "월";
+        const outValue = parseInt(withdrawals[i].dataset.value, 10);
+        const inValue = parseInt(deposits[i].dataset.value, 10);
+        rows.push([month, outValue, inValue]);
+    }
+    data.addRows(rows);
+
 	var option = {
 		title: 'GRAPH',
 		width: '100%',
@@ -64,6 +58,16 @@ function drawChart(){
     <div th:insert="fragment/header :: site-header"></div>
     
     <main class="container">
+        <section class="hidden-input">
+            <div th:each="out, stat : ${sumWithdrawal}" class="withdrawals">
+                <input type="hidden"
+                    th:attr="data-month=${stat.index + 1}, data-value=${out != null ? out.money : 0}" />
+            </div>
+            <div th:each="in, stat : ${sumDeposit}" class="deposits">
+                <input type="hidden"
+                    th:attr="data-month=${stat.index + 1}, data-value=${in != null ? in.money : 0}" />
+            </div>
+        </section>
         <section class="table-section my-4 p-3 bg-light rounded shadow-sm">
             <h2 class="text-center mb-3">소득 및 지출</h2>
             <table class="table table-bordered text-center fixed-table" id="accountTable">
