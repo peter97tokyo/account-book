@@ -18,16 +18,16 @@ google.setOnLoadCallback(drawChart);
 
 function drawChart(){
 	var data = new google.visualization.DataTable();
-	data.addColumn('string', '월');
-	data.addColumn('number', '지출');
-    data.addColumn('number', '소득');
+	data.addColumn('string', 'Month');
+	data.addColumn('number', 'Withdrawal');
+    data.addColumn('number', 'Deposit');
 	
     const withdrawals = document.querySelectorAll('div.withdrawals input[data-month]');
     const deposits = document.querySelectorAll('div.deposits input[data-month]');
 
     const rows = [];
     for (let i = 0; i < withdrawals.length; i++) {
-        const month = withdrawals[i].dataset.month + "월";
+        const month = withdrawals[i].dataset.month;
         const outValue = parseInt(withdrawals[i].dataset.value, 10);
         const inValue = parseInt(deposits[i].dataset.value, 10);
         rows.push([month, outValue, inValue]);
@@ -44,8 +44,8 @@ function drawChart(){
 			
 		],
 		vAxes: [
-            { title: '지출' },
-			{ title: '소득' },
+            { title: 'Withdrawal' },
+			{ title: 'Deposit' },
             
 		]
 	};
@@ -69,7 +69,13 @@ function drawChart(){
             </div>
         </section>
         <section class="table-section my-4 p-3 bg-light rounded shadow-sm">
-            <h2 class="text-center mb-3">소득 및 지출</h2>
+            <div class="d-flex justify-content-between mb-3">
+                <button type="button" class="btn btn-dark"
+                        th:onclick="'window.location.href=\'/accountBook/graph?year=' + (${year} - 1) + '\';'">&lt;&lt;</button>
+                <h2 class="text-center" th:text="'Deposit and withdrawal records for ' + ${year}">Withdrawal And Deposit</h2>
+                <button type="button" class="btn btn-dark"
+                        th:onclick="'window.location.href=\'/accountBook/graph?year=' + (${year} + 1) + '\';'">&gt;&gt;</button>
+            </div>
             <table class="table table-bordered text-center fixed-table" id="accountTable">
                  <colgroup>
                     <col style="width: 7.6%;">
@@ -89,27 +95,27 @@ function drawChart(){
                 <thead class="table-dark">
                     <tr>
                         <th></th>
-                        <th>1월</th>
-                        <th>2월</th>
-                        <th>3월</th>
-                        <th>4월</th>
-                        <th>5월</th>
-                        <th>6월</th>
-                        <th>7월</th>
-                        <th>8월</th>
-                        <th>9월</th>
-                        <th>10월</th>
-                        <th>11월</th>
-                        <th>12월</th>
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                        <th>Apr</th>
+                        <th>May</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
+                        <th>Aug</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dec</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>지출</td>
+                        <td>Withdrawal</td>
                         <td th:each="out : ${sumWithdrawal}" th:text="${out != null ? #numbers.formatDecimal((out.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"></td>
                     </tr>
                     <tr>
-                        <td>소득</td>
+                        <td>Deposit</td>
                         <td th:each="in : ${sumDeposit}" th:text="${in != null ? #numbers.formatDecimal((in.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"></td>
                     </tr>
                 </tbody>
@@ -120,38 +126,49 @@ function drawChart(){
         <section class="d-flex justify-content-around my-4">
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
-                <h5 class="card-title">하루 평균지출</h5>
+                <h5 class="card-title">Average Daily Withdrawal</h5>
                     <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((avgWithdrawalOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
-                <h5 class="card-title">한달 평균지출</h5>
-                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(( (sumWithdrawalOneYear / cntWithdrawal) ?:0), 0, 'COMMA', 0, 'POINT')}"></p>
+                <h5 class="card-title">Average Monthly Withdrawal</h5>
+                    <p class="card-text fw-bold" th:text="${
+                        #numbers.formatDecimal(
+                        ((sumWithdrawalOneYear != null ? sumWithdrawalOneYear : 0L) 
+                        / (cntWithdrawal != null && cntWithdrawal != 0 ? cntWithdrawal : 1L)), 
+                        0, 'COMMA', 0, 'POINT')
+                    }"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
-                <h5 class="card-title">총 지출</h5>
+                <h5 class="card-title">Total Withdrawal</h5>
                 <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((sumWithdrawalOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
-                    <h5 class="card-title">한달 평균소득</h5>
-                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal(( (sumDepositOneYear / cntDeposit) ?:0), 0, 'COMMA', 0, 'POINT')}"></p>
+                    <h5 class="card-title">Average Monthly Deposit</h5>
+                    <p class="card-text fw-bold" th:text="${
+                    #numbers.formatDecimal(
+                    ((sumDepositOneYear != null ? sumDepositOneYear : 0L) 
+                    / (cntDeposit != null && cntDeposit != 0 ? cntDeposit : 1L)), 
+                    0, 'COMMA', 0, 'POINT')
+                    }
+                    "></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
-                    <h5 class="card-title">총 소득</h5>
+                    <h5 class="card-title">Total Deposit</h5>
                     <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((sumDepositOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
         </section>
 
         <section class="graph-section my-4 p-3 bg-light rounded shadow-sm">
-            <h2 class="text-center mb-3">월별 그래프</h2>
+            <h2 class="text-center mb-3">Monthly Withdrawal / Deposit Graph</h2>
             <div id="chart" style="width: 100%; height: 400px;"></div>    
         </section>     
     </main>

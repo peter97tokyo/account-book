@@ -71,19 +71,23 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public List<WalletDto> sumMoneyByYearAndMonth(short year, boolean depositWithdrawal) {
         List<Object[]> items = walletRepository.sumMoneyByYearAndMonth(year, depositWithdrawal);
-        List<WalletDto> result = new ArrayList<WalletDto>();
-        WalletDto wallet = null;
+        List<WalletDto> result = new ArrayList<>();
+        WalletDto wallet;
         int startNumber = 0;
         int startNumberNeeds = 0;
-        if (items != null) {
-            startNumber = ((Number) items.get(0)[1]).intValue(); 
+
+        if (!items.isEmpty()) {
+            startNumber = ((Number) items.get(0)[1]).intValue();
             if (startNumber > 1) {
                 startNumberNeeds = startNumber - 1;
             }
         }
+
+        // items가 비어 있어도 안전하게 null 또는 기본값 채우기
         for (int i = 0; i < startNumberNeeds; i++) {
-            result.add(null);
+            result.add(null); // 필요하면 WalletDto에 기본값 넣어도 됨
         }
+
         for (Object[] item : items) {
             wallet = new WalletDto();
             wallet.setYear(((Number) item[0]).longValue());
@@ -91,13 +95,13 @@ public class WalletServiceImpl implements WalletService {
             wallet.setMoney(((Number) item[2]).longValue());
             result.add(wallet);
         }
-        if (result.size() < 12) {
-            int lastNumberNeeds = 12 - result.size();
-            for (int i = 1; i <= lastNumberNeeds; i++) {
-                result.add(null);
-            }
+
+        // result가 12개 미만이면 null 또는 기본값으로 채우기
+        while (result.size() < 12) {
+            result.add(null); // 필요시 기본 WalletDto 생성 가능
         }
         return result;
+
     }
 
     @Override

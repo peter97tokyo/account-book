@@ -174,12 +174,14 @@ public class AccountBookController {
     }
 
     @GetMapping("/accountBook/graph")
-    public String graph(Model model) {
-        Date today = new Date();
+    public String graph(Model model, @RequestParam(value="year", defaultValue="0") int year) {
 
-        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
-
-        int year = Integer.valueOf(yearFormat.format(today));
+        if(year == 0){
+            Date today = new Date();
+            SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+            year = Integer.valueOf(yearFormat.format(today));
+        }
+        
 
         List<WalletDto> sumDeposit = walletService.sumMoneyByYearAndMonth((short) year, true); // in
         long cntDeposit = sumDeposit.stream().filter(Objects::nonNull).count();
