@@ -47,6 +47,10 @@ public class WalletController {
         saveWallet.setMonth((byte) month);
         saveWallet.setDay((byte) day);
 
+        saveWallet.setInputDate(
+            LocalDateTime.of(year, month, day, 0, 0) 
+        );
+
         saveWallet.setMemo(walletDto.getMemo());
         saveWallet.setMoney(walletDto.getMoney());
         saveWallet.setType(walletDto.getType());

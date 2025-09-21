@@ -51,4 +51,7 @@ public class Wallet {
 
     @LastModifiedDate
     private LocalDateTime updatedDate;
+
+    @Column(nullable = false) 
+    private LocalDateTime inputDate;
 }
