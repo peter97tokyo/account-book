@@ -1,55 +1,114 @@
-<div th:each="wallet : ${list}">
-    <div th:if="${wallet.depositWithdrawal}" class="alert alert-success">
-        <span class="d-flex justify-content-between">
-            
-            <a href="javascript:void(0)"
-                class="text-decoration-none link-primary" 
-                th:onclick="|popupWalletUpdtFrm(${wallet.id} )|">EDIT</a>
-
-            <a href="javascript:void(0)" 
-                class="text-decoration-none link-danger" 
-                th:onclick="|deleteWallet(${wallet.id} )|">DELETE</a>
-        </span>
-        <span class="d-flex justify-content-between">
-            <span th:text="${#numbers.formatDecimal(wallet.money, 0, 'COMMA', 0, 'POINT')}"></span>
-            <span th:text="${#temporals.format(wallet.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-        </span>
-        <hr>
-            <span th:if="${wallet.type == 'rent'}" >Monthly rent 🏠</span>
-            <span th:if="${wallet.type == 'util'}" >Utilities 💄</span>
-            <span th:if="${wallet.type == 'food'}" >Food cost 🍖</span>
-            <span th:if="${wallet.type == 'goods'}" >Sundry goods 🧩</span>
-            <span th:if="${wallet.type == 'gift'}" >Gift 🎁</span>
-            <span th:if="${wallet.type == 'in'}" >deposit 💵</span>
-            <span th:if="${wallet.type == 'etc'}" >Etc 📦</span>
-        <br>
-            <span th:text="${wallet.memo}"></span>
-      
-    </div>
-    <div th:if="${!wallet.depositWithdrawal}" class="alert alert-danger">
-        <span class="d-flex justify-content-between">
-            <a href="javascript:void(0)"
-            class="text-decoration-none link-primary" 
-            th:onclick="|popupWalletUpdtFrm(${wallet.id} )|">EDIT</a>
-
-            <a href="javascript:void(0)" 
-            class="text-decoration-none link-danger" 
-            th:onclick="|deleteWallet(${wallet.id} )|">DELETE</a>
-        </span>
-        <span class="d-flex justify-content-between">
-            <span th:text="${#numbers.formatDecimal(wallet.money, 0, 'COMMA', 0, 'POINT')}"></span>
-            <span th:text="${#temporals.format(wallet.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
-        </span>
-        <hr>
-            <span th:if="${wallet.type == 'rent'}" >Monthly rent 🏠</span>
-            <span th:if="${wallet.type == 'util'}" >Utilities 💄</span>
-            <span th:if="${wallet.type == 'food'}" >Food cost 🍖</span>
-            <span th:if="${wallet.type == 'goods'}" >Sundry goods 🧩</span>
-            <span th:if="${wallet.type == 'gift'}" >Gift 🎁</span>
-            <span th:if="${wallet.type == 'in'}" >deposit 💵</span>
-            <span th:if="${wallet.type == 'etc'}" >Etc 📦</span>
-        <br>
-            <span th:text="${wallet.memo}"></span>
-    </div>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCOUNT BOOK LIST</title>
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/account-book.css">
     
-</div>
+    <script src="/js/jquery/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/js/account-book.js"></script>
+</head>
+<body>
+    <div th:insert="fragment/header :: site-header"></div>
+
+    <main class="container">
+        
+        <form class="my-4 text-end d-flex justify-content-center align-items-center gap-2 p-3 bg-light rounded shadow-sm"
+            method="get">
+
+            <input type="text" id="searchInput" name="memo" class="form-control w-25" placeholder="Search..."
+                th:value="${memo}">
+
+            <select class="form-select w-auto" name="depositWithdrawal">
+                <option value="">ALL</option>
+                <option value="false" th:selected="${depositWithdrawal == false}">withdrawal 💸</option>
+                <option value="true" th:selected="${depositWithdrawal == true}">deposit 💵</option>
+            </select>
+
+            <select class="form-select w-auto" name="type">
+                <option value="">ALL</option>
+                <option value="rent" th:selected="${type == 'rent'}">Monthly rent 🏠</option>
+                <option value="util" th:selected="${type == 'util'}">Utilities 💡</option>
+                <option value="food" th:selected="${type == 'food'}">Food cost 🍖</option>
+                <option value="goods" th:selected="${type == 'goods'}">Sundry goods 🧩</option>
+                <option value="gift" th:selected="${type == 'gift'}">Gift 🎁</option>
+                <option value="in" th:selected="${type == 'in'}">deposit 💵</option>
+                <option value="etc" th:selected="${type == 'etc'}">Etc 📦</option>
+            </select>
+
+            <input type="date" id="startDate" name="startDate" class="form-control w-auto"
+                th:value="${startDate}">
+            <input type="date" id="endDate" name="endDate" class="form-control w-auto"
+                th:value="${endDate}">
+
+            <button type="submit" class="btn btn-primary">SEARCH</button>
+        </form>
+
+
+        <table class="table table-bordered text-center" id="accountTable">
+            <thead class="table-dark">
+                <tr>
+                    <th>DATE</th>
+                    <th>IN&OUT</th>
+                    <th>TYPE</th>
+                    <th>MEMO</th>
+                    <th>MONEY</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${paging}">
+                    <td th:text="${item.year + '-' + item.month + '-' + item.day}">2025-09-01</td>
+                    <td>
+                        <div th:if="${item.depositWithdrawal == true}">IN</div>
+                        <div th:unless="${item.depositWithdrawal == true}">OUT</div>
+                    </td>
+                    <td>
+                        <div th:if="${item.type == 'rent'}">Monthly rent 🏠</div>
+                        <div th:if="${item.type == 'util'}">Utilities 💄</div>
+                        <div th:if="${item.type == 'food'}">Food cost 🍖</div>
+                        <div th:if="${item.type == 'goods'}">Sundry goods 🧩</div>
+                        <div th:if="${item.type == 'gift'}">Gift 🎁</div>
+                        <div th:if="${item.type == 'in'}">deposit 💵</div>
+                        <div th:if="${item.type == 'etc'}">Etc 📦</div>
+                    </td>
+                    <td>
+                        <span class="showToast" th:title="${item.memo}"> 
+                            Show
+                        </span> 
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(item.money, 0, 'COMMA', 0, 'POINT')}">1000</td>
+                </tr>
+            </tbody>
+        </table>
+
+       <nav th:if="${!paging.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a th:href="@{|?page=${prevPage}&memo=${memo}&depositWithdrawal=${depositWithdrawal}&type=${type}&startDate=${startDate}&endDate=${endDate} |}" class="page-link">Prev</a>
+                </li>
+                <li th:each="pageNum : ${pages}" th:classappend="${pageNum == paging.number} ? 'active'" class="page-item">
+                    <a th:text="${pageNum + 1}" th:href="@{|?page=${pageNum}&memo=${memo}&depositWithdrawal=${depositWithdrawal}&type=${type}&startDate=${startDate}&endDate=${endDate} |}" class="page-link"></a>
+                </li>
+                <li class="page-item">
+                    <a th:href="@{|?page=${nextPage}&memo=${memo}&depositWithdrawal=${depositWithdrawal}&type=${type}&startDate=${startDate}&endDate=${endDate} |}" class="page-link">Next</a>
+                </li>
+            </ul>
+        </nav>
+
+        <section>
+            <div class="toast " id="toast">
+                <div class="toast-header d-flex justify-content-between">
+                    <span>MEMO</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body" id="toastBody">
+                </div>
+            </div>
+        </section>  
+    </main>
+    <div th:insert="fragment/footer :: site-footer"></div>
+</body>
+</html>
