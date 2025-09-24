@@ -3,13 +3,17 @@ package jp.peter.account.controller;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -167,10 +171,41 @@ public class AccountBookController {
     }
 
     @GetMapping("/accountBook/list")
-    public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) {
-        Page<Wallet> paging = walletService.getPage(page);
+    public String list(Model model,
+                    @RequestParam(value="page", defaultValue="0") int page,
+                    @RequestParam(value="startDate", required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                    @RequestParam(value="endDate", required=false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                    @RequestParam(value="memo", required=false) String memo,
+                    @RequestParam(value="depositWithdrawal", required=false) Boolean depositWithdrawal,
+                    @RequestParam(value="type", required=false) String type) {
+
+        LocalDateTime startDateTime = (startDate != null) ? startDate.atStartOfDay() : null;
+        LocalDateTime endDateTime   = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
+
+        Page<Wallet> paging = walletService.getPage(page, startDateTime, endDateTime, memo, depositWithdrawal, type);
+
         model.addAttribute("paging", paging);
-        return "accountBook/list"; 
+
+        int prevPage = paging.hasPrevious() ? page - 1 : 0;
+        int nextPage = paging.hasNext() ? page + 1 : paging.getTotalPages() - 1;
+        
+        List<Integer> pages = IntStream.range(0, paging.getTotalPages())
+                                    .boxed()
+                                    .collect(Collectors.toList());
+        
+        
+        model.addAttribute("prevPage", prevPage);
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("pages", pages);
+        
+        model.addAttribute("memo", memo != null ? memo : "");
+        model.addAttribute("depositWithdrawal", depositWithdrawal != null ? depositWithdrawal : "");
+        model.addAttribute("type", type != null ? type : "");
+        model.addAttribute("startDate", startDate != null ? startDate : "");
+        model.addAttribute("endDate", endDate != null ? endDate : "");
+
+
+        return "accountBook/list";
     }
 
     @GetMapping("/accountBook/graph")

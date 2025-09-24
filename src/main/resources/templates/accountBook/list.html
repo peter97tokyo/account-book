@@ -16,27 +16,37 @@
 
     <main class="container">
         
-        <div class="my-4 text-end d-flex justify-content-center align-items-center gap-2 p-3 bg-light rounded shadow-sm">
-            <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">
+        <form class="my-4 text-end d-flex justify-content-center align-items-center gap-2 p-3 bg-light rounded shadow-sm"
+            method="get">
+
+            <input type="text" id="searchInput" name="memo" class="form-control w-25" placeholder="Search..."
+                th:value="${memo}">
+
             <select class="form-select w-auto" name="depositWithdrawal">
                 <option value="">ALL</option>
-                <option value="false">withdrawal 💸</option>
-                <option value="true">deposit 💵</option>
-            </select>        
+                <option value="false" th:selected="${depositWithdrawal == false}">withdrawal 💸</option>
+                <option value="true" th:selected="${depositWithdrawal == true}">deposit 💵</option>
+            </select>
+
             <select class="form-select w-auto" name="type">
                 <option value="">ALL</option>
-                <option value="rent">Monthly rent 🏠</option>
-                <option value="util">Utilities 💄</option>
-                <option value="food">Food cost 🍖</option>
-                <option value="goods">Sundry goods 🧩</option>
-                <option value="gift">Gift 🎁</option>
-                <option value="in">deposit 💵</option>
-                <option value="etc">Etc 📦</option>
+                <option value="rent" th:selected="${type == 'rent'}">Monthly rent 🏠</option>
+                <option value="util" th:selected="${type == 'util'}">Utilities 💡</option>
+                <option value="food" th:selected="${type == 'food'}">Food cost 🍖</option>
+                <option value="goods" th:selected="${type == 'goods'}">Sundry goods 🧩</option>
+                <option value="gift" th:selected="${type == 'gift'}">Gift 🎁</option>
+                <option value="in" th:selected="${type == 'in'}">deposit 💵</option>
+                <option value="etc" th:selected="${type == 'etc'}">Etc 📦</option>
             </select>
-            <input type="date" id="startDate" class="form-control w-auto">
-            <input type="date" id="endDate" class="form-control w-auto">
-            <button type="button" class="btn btn-primary">SEARCH</button>
-        </div>
+
+            <input type="date" id="startDate" name="startDate" class="form-control w-auto"
+                th:value="${startDate}">
+            <input type="date" id="endDate" name="endDate" class="form-control w-auto"
+                th:value="${endDate}">
+
+            <button type="submit" class="btn btn-primary">SEARCH</button>
+        </form>
+
 
         <table class="table table-bordered text-center" id="accountTable">
             <thead class="table-dark">
@@ -74,26 +84,20 @@
             </tbody>
         </table>
 
-        <nav th:if="${!paging.isEmpty()}">
-            <ul class="pagination justify-content-center" id="pagination">
-                <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-                    <a class="page-link"
-                        th:href="@{|?page=${paging.number-1}|}">
-                        <span>이전</span>
-                    </a>
+       <nav th:if="${!paging.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a th:href="@{|?page=${prevPage}&memo=${memo}&depositWithdrawal=${depositWithdrawal}&type=${type}&startDate=${startDate}&endDate=${endDate} |}" class="page-link">Prev</a>
                 </li>
-                <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
-                    th:classappend="${page == paging.number} ? 'active'" 
-                    class="page-item">
-                    <a th:text="${page + 1}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                <li th:each="pageNum : ${pages}" th:classappend="${pageNum == paging.number} ? 'active'" class="page-item">
+                    <a th:text="${pageNum + 1}" th:href="@{|?page=${pageNum}&memo=${memo}&depositWithdrawal=${depositWithdrawal}&type=${type}&startDate=${startDate}&endDate=${endDate} |}" class="page-link"></a>
                 </li>
-                <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                    <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
-                        <span>다음</span>
-                    </a>
+                <li class="page-item">
+                    <a th:href="@{|?page=${nextPage}&memo=${memo}&depositWithdrawal=${depositWithdrawal}&type=${type}&startDate=${startDate}&endDate=${endDate} |}" class="page-link">Next</a>
                 </li>
             </ul>
         </nav>
+
         <section>
             <div class="toast " id="toast">
                 <div class="toast-header d-flex justify-content-between">

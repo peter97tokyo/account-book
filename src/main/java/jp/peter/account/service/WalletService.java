@@ -1,5 +1,6 @@
 package jp.peter.account.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,7 @@ public interface WalletService {
 
     Optional<Wallet> findById(Long id);
 
-    Page<Wallet> getPage(int page);
+    Page<Wallet> getPage(int page, LocalDateTime startDate, LocalDateTime endDate, String memo, Boolean depositWithdrawal, String type);
 
     List<WalletDto> sumMoneyByYearAndMonth(short year, boolean depositWithdrawal);
 

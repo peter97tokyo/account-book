@@ -1,5 +1,6 @@
 package jp.peter.account.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,12 +8,15 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 
 import jp.peter.account.dto.WalletDto;
 import jp.peter.account.entity.Wallet;
 import jp.peter.account.repository.WalletRepository;
+import jp.peter.account.specification.WalletSpecification;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -63,9 +67,21 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public Page<Wallet> getPage(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
-        return walletRepository.findAll(pageable);
+    public Page<Wallet> getPage(int page,
+                                LocalDateTime startDate,
+                                LocalDateTime endDate,
+                                String memo,
+                                Boolean depositWithdrawal,
+                                String type) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("inputDate").descending());
+
+        Specification<Wallet> spec = Specification
+            .where(WalletSpecification.inputDateBetween(startDate, endDate))
+            .and(WalletSpecification.memoContains(memo))
+            .and(WalletSpecification.depositWithdrawalEquals(depositWithdrawal))
+            .and(WalletSpecification.typeContains(type));
+
+        return walletRepository.findAll(spec, pageable);
     }
 
     @Override

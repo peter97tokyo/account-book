@@ -8,6 +8,7 @@ package jp.peter.account.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -15,7 +16,7 @@ import jp.peter.account.entity.Wallet;
 import java.util.List;
 
 
-public interface WalletRepository extends JpaRepository<Wallet, Long> {
+public interface WalletRepository extends JpaRepository<Wallet, Long>, JpaSpecificationExecutor<Wallet> {
 
        @Query(value = "SELECT SUM(money) FROM wallet WHERE year = :year AND month = :month AND day = :day AND deposit_withdrawal = FALSE", nativeQuery = true)
        Long findDailyWithdrawalByYearAndMonthAndDayNative(@Param("year") short year, @Param("month") byte month, @Param("day") byte day);
