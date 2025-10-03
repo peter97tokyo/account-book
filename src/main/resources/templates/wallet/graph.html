@@ -127,7 +127,7 @@ function drawChart(){
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
                 <h5 class="card-title">Average Daily Withdrawal</h5>
-                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((avgWithdrawalOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
+                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((avgDailyWithdrawalForOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">

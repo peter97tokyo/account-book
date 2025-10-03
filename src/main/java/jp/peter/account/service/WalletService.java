@@ -35,6 +35,6 @@ public interface WalletService {
 
     Long sumMoneyForOneYear(short year, boolean depositWithdrawal);
     
-    Long avgMoneyForOneYear(short year, boolean depositWithdrawal);
+    Long avgDailyWithdrawalForOneYear(short year, boolean depositWithdrawal);
     
 }

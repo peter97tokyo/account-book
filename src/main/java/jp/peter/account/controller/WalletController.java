@@ -238,7 +238,7 @@ public class WalletController {
         Long sumDepositOneYear = walletService.sumMoneyForOneYear((short)year, true); // in
         
         Long sumWithdrawalOneYear = walletService.sumMoneyForOneYear((short)year, false); // out
-        Long avgWithdrawalOneYear = walletService.avgMoneyForOneYear((short)year, false); // out
+        Long avgDailyWithdrawalForOneYear = walletService.avgDailyWithdrawalForOneYear((short)year, false); // out
 
         model.addAttribute("sumDeposit", sumDeposit);
         model.addAttribute("cntDeposit", cntDeposit);
@@ -247,7 +247,7 @@ public class WalletController {
 
         model.addAttribute("sumDepositOneYear", sumDepositOneYear);
         model.addAttribute("sumWithdrawalOneYear", sumWithdrawalOneYear);
-        model.addAttribute("avgWithdrawalOneYear", avgWithdrawalOneYear);
+        model.addAttribute("avgDailyWithdrawalForOneYear", avgDailyWithdrawalForOneYear);
 
         model.addAttribute("year", year);
     
