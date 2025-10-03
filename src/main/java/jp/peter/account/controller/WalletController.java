@@ -228,25 +228,25 @@ public class WalletController {
             SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
             year = Integer.valueOf(yearFormat.format(today));
         }
-        
-
+    
         List<WalletDto> sumDeposit = walletService.sumMoneyByYearAndMonth((short) year, true); // in
-        long cntDeposit = sumDeposit.stream().filter(Objects::nonNull).count();
         List<WalletDto> sumWithdrawal = walletService.sumMoneyByYearAndMonth((short) year, false); // out
-        long cntWithdrawal = sumWithdrawal.stream().filter(Objects::nonNull).count();
 
         Long sumDepositOneYear = walletService.sumMoneyForOneYear((short)year, true); // in
-        
+        Long avgMonthlyDepositForOneYear = walletService.avgMonthlyMoneyForOneYear((short)year, true); // in
+
         Long sumWithdrawalOneYear = walletService.sumMoneyForOneYear((short)year, false); // out
+        Long avgMonthlyWithdrawalForOneYear = walletService.avgMonthlyMoneyForOneYear((short)year, false); // out
         Long avgDailyWithdrawalForOneYear = walletService.avgDailyWithdrawalForOneYear((short)year, false); // out
 
         model.addAttribute("sumDeposit", sumDeposit);
-        model.addAttribute("cntDeposit", cntDeposit);
         model.addAttribute("sumWithdrawal", sumWithdrawal);
-        model.addAttribute("cntWithdrawal", cntWithdrawal);
 
         model.addAttribute("sumDepositOneYear", sumDepositOneYear);
         model.addAttribute("sumWithdrawalOneYear", sumWithdrawalOneYear);
+
+        model.addAttribute("avgMonthlyDepositForOneYear", avgMonthlyDepositForOneYear);
+        model.addAttribute("avgMonthlyWithdrawalForOneYear", avgMonthlyWithdrawalForOneYear);
         model.addAttribute("avgDailyWithdrawalForOneYear", avgDailyWithdrawalForOneYear);
 
         model.addAttribute("year", year);

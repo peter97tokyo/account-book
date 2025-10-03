@@ -126,8 +126,13 @@ public class WalletServiceImpl implements WalletService {
     }
     
     @Override
+    public Long avgMonthlyMoneyForOneYear(short year, boolean depositWithdrawal) {
+        return walletRepository.avgMonthlyMoneyForOneYear(year, depositWithdrawal);
+    }
+
+    @Override
     public Long avgDailyWithdrawalForOneYear(short year, boolean depositWithdrawal) {
-        return walletRepository.avgMoneyByDepositWithdrawal(year, depositWithdrawal);
+        return walletRepository.avgDailyWithdrawalForOneYear(year, depositWithdrawal);
     }
     
 }

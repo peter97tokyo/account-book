@@ -133,12 +133,7 @@ function drawChart(){
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
                 <h5 class="card-title">Average Monthly Withdrawal</h5>
-                    <p class="card-text fw-bold" th:text="${
-                        #numbers.formatDecimal(
-                        ((sumWithdrawalOneYear != null ? sumWithdrawalOneYear : 0L) 
-                        / (cntWithdrawal != null && cntWithdrawal != 0 ? cntWithdrawal : 1L)), 
-                        0, 'COMMA', 0, 'POINT')
-                    }"></p>
+                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((avgMonthlyWithdrawalForOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
@@ -150,13 +145,7 @@ function drawChart(){
             <div class="card text-center shadow-sm" style="width: 200px;">
                 <div class="card-body bg-light text-dark rounded">
                     <h5 class="card-title">Average Monthly Deposit</h5>
-                    <p class="card-text fw-bold" th:text="${
-                    #numbers.formatDecimal(
-                    ((sumDepositOneYear != null ? sumDepositOneYear : 0L) 
-                    / (cntDeposit != null && cntDeposit != 0 ? cntDeposit : 1L)), 
-                    0, 'COMMA', 0, 'POINT')
-                    }
-                    "></p>
+                    <p class="card-text fw-bold" th:text="${#numbers.formatDecimal((avgMonthlyDepositForOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></p>
                 </div>
             </div>
             <div class="card text-center shadow-sm" style="width: 200px;">
