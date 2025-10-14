@@ -63,5 +63,17 @@ public interface WalletRepository extends JpaRepository<Wallet, Long>, JpaSpecif
               """, nativeQuery = true)
        Long avgDailyWithdrawalForOneYear(@Param("year") short year, @Param("deposit_withdrawal") boolean depositWithdrawal);
 
-       
+       @Query(value = """
+              SELECT AVG(daily_total)
+              FROM (
+                     SELECT SUM(money) AS daily_total
+                     FROM wallet
+                     WHERE YEAR(input_date) = :year
+                     AND MONTH(input_date) = :month
+                     AND deposit_withdrawal = :deposit_withdrawal
+                     GROUP BY DATE(input_date)
+              ) t
+              """, nativeQuery = true)
+       Long avgDailyWithdrawalForMonth(@Param("year") short year, @Param("month") byte month, @Param("deposit_withdrawal") boolean depositWithdrawal);
+
 }      

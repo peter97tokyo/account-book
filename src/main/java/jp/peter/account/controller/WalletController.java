@@ -97,9 +97,26 @@ public class WalletController {
 
         Long totalDeposit = walletService.findTotalInOut((short) year, (byte) month, true);
         Long totalWithdrawal = walletService.findTotalInOut((short) year, (byte) month, false);
+
+        int prevMonth = month - 1;
+        int prevYear = year;
+
+        if (prevMonth == 0) {
+            prevMonth = 12;
+            prevYear--;
+        }
+
+        Long totalWithdrawalPrevMonth = walletService.findTotalInOut((short) prevYear, (byte) prevMonth, false);
         
+        Long avgDailyWithdrawalForMonth = walletService.avgDailyWithdrawalForMonth((short)year, (byte) month, false); 
+        Long avgDailyWithdrawalForOneYear = walletService.avgDailyWithdrawalForOneYear((short)year, false);
+
+
         model.addAttribute("totalDeposit", totalDeposit);
         model.addAttribute("totalWithdrawal", totalWithdrawal);
+        model.addAttribute("totalWithdrawalPrevMonth", totalWithdrawalPrevMonth);
+        model.addAttribute("avgDailyWithdrawalForMonth", avgDailyWithdrawalForMonth);
+        model.addAttribute("avgDailyWithdrawalForOneYear", avgDailyWithdrawalForOneYear);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("day", day);
@@ -169,9 +186,24 @@ public class WalletController {
 
         Long totalDeposit = walletService.findTotalInOut(yearShort, monthByte, true);
         Long totalWithdrawal = walletService.findTotalInOut(yearShort, monthByte, false);
-        
+
+        int prevMonth = month - 1;
+        int prevYear = year;
+
+        if (prevMonth == 0) {
+            prevMonth = 12;
+            prevYear--;
+        }
+
+        Long totalWithdrawalPrevMonth = walletService.findTotalInOut((short) prevYear, (byte) prevMonth, false);
+        Long avgDailyWithdrawalForMonth = walletService.avgDailyWithdrawalForMonth(yearShort, monthByte, false);
+        Long avgDailyWithdrawalForOneYear = walletService.avgDailyWithdrawalForOneYear(yearShort, false);
+
         model.addAttribute("totalDeposit", totalDeposit);
         model.addAttribute("totalWithdrawal", totalWithdrawal);
+        model.addAttribute("totalWithdrawalPrevMonth", totalWithdrawalPrevMonth);
+        model.addAttribute("avgDailyWithdrawalForMonth", avgDailyWithdrawalForMonth);
+        model.addAttribute("avgDailyWithdrawalForOneYear", avgDailyWithdrawalForOneYear);
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("firstDayWeek", firstDayWeek);

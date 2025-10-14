@@ -39,7 +39,8 @@
             <div class="row text-center g-2">
                 <div class="col-md-4">
                     <div class="p-2 bg-white rounded shadow-sm">
-                        <strong>Prev. Month Out:</strong> 0
+                        <strong>Prev. Month Out:</strong> 
+                        <span th:text="${#numbers.formatDecimal((totalWithdrawalPrevMonth?:0), 0, 'COMMA', 0, 'POINT')}">0</span>
                     </div>
                 </div>
 
@@ -58,8 +59,8 @@
 
                 <div class="col-md-4">
                     <div class="p-2 bg-white rounded shadow-sm">
-                        <strong>Daily Avg:</strong> 0 &nbsp; | &nbsp;
-                        <strong>YTD Avg:</strong> 0
+                        <strong>Daily Avg:</strong> <span th:text="${#numbers.formatDecimal((avgDailyWithdrawalForMonth?:0), 0, 'COMMA', 0, 'POINT')}">0</span> &nbsp; | &nbsp;
+                        <strong>YTD Avg:</strong> <span th:text="${#numbers.formatDecimal((avgDailyWithdrawalForOneYear?:0), 0, 'COMMA', 0, 'POINT')}">0</span>
                     </div>
                 </div>
             </div>

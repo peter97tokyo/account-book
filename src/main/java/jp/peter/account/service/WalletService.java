@@ -38,5 +38,7 @@ public interface WalletService {
     Long avgMonthlyMoneyForOneYear(short year, boolean depositWithdrawal);
     
     Long avgDailyWithdrawalForOneYear(short year, boolean depositWithdrawal);
+
+    Long avgDailyWithdrawalForMonth(short year, byte month, boolean depositWithdrawal);
     
 }
