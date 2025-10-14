@@ -16,42 +16,52 @@
 
     <main class="container">
 
-        <section class="calendar-field">
-            <div class="d-flex justify-content-start previous-field">
-                <form action="/wallet/calendar" method="post" class="box-inline">
+        <section class="calendar-header container-fluid py-3 bg-light border-bottom my-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <form action="/wallet/calendar" method="post" class="d-inline">
                     <input type="hidden" name="year" th:value="${month == 1 ? year - 1 : year}" />
                     <input type="hidden" name="month" th:value="${month == 1 ? 12 : month - 1}" />
-                    <button type="submit" class="btn btn-dark font-weight-bold btn-height-hundred">&lt;&lt;</button>
+                    <button type="submit" class="btn btn-dark">&laquo;</button>
                 </form>
+                <h3 class="m-0 fw-bold">
+                    <span th:text="${year}">2025</span>
+                    <span th:text="${month}">10</span>
+                </h3>
+                <div>
+                    <form action="/wallet/calendar" method="post" class="d-inline me-2">
+                        <input type="hidden" name="year" th:value="${month == 12 ? year + 1 : year}" />
+                        <input type="hidden" name="month" th:value="${month == 12 ? 1 : month + 1}" />
+                        <button type="submit" class="btn btn-dark">&raquo;</button>
+                    </form>
+                </div>
             </div>
-            <div class="year-container">
-                <div th:text="${year}" class="year-field">year</div>
-            </div>
-            <div class="month-container">
-                <div th:text="${month}" class="month-field">month</div>
-            </div>
-            <div class="blank-calendar-field">
-                <table class="in-out-table">
-                    <tr>
-                        <th>In</th>
-                        <th th:text="${#numbers.formatDecimal((totalDeposit?:0), 0, 'COMMA', 0, 'POINT')}" class="text-right ">1000</th>
-                    </tr>
-                    <tr>
-                        <th>Out</th>
-                        <th th:text="${#numbers.formatDecimal((totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}" class="text-right ">1000</th>
-                    </tr>
-                    <tr>
-                        <th>Left</th>
-                        <th th:text="${#numbers.formatDecimal((totalDeposit?:0) - (totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}" class="text-right">1000</th>
-                    </tr>
-                </table>
-            </div>
-            <div class="d-flex justify-content-end next-field">
-                <form action="/wallet/calendar" method="post" class="box-inline">
-                    <input type="hidden" name="year" th:value="${month == 12 ? year + 1 : year}" />
-                    <input type="hidden" name="month" th:value="${month == 12 ? 1 : month + 1}" />
-                    <button type="submit" class="btn btn-dark font-weight-bold btn-height-hundred">&gt;&gt;</button>
-                </form>
+
+            <div class="row text-center g-2">
+                <div class="col-md-4">
+                    <div class="p-2 bg-white rounded shadow-sm">
+                        <strong>Prev. Month Out:</strong> 0
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="p-2 bg-white rounded shadow-sm">
+                        <strong>In:</strong>
+                        <span th:text="${#numbers.formatDecimal((totalDeposit?:0), 0, 'COMMA', 0, 'POINT')}">0</span>
+                        &nbsp; | &nbsp;
+                        <strong>Out:</strong>
+                        <span th:text="${#numbers.formatDecimal((totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}">0</span>
+                        &nbsp; | &nbsp;
+                        <strong>Left:</strong>
+                        <span th:text="${#numbers.formatDecimal((totalDeposit?:0) - (totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}">0</span>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="p-2 bg-white rounded shadow-sm">
+                        <strong>Daily Avg:</strong> 0 &nbsp; | &nbsp;
+                        <strong>YTD Avg:</strong> 0
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -135,7 +145,8 @@
                                     <option value="food">Food cost 🍖</option>
                                     <option value="goods">Sundry goods 🧩</option>
                                     <option value="gift">Gift 🎁</option>
-                                    <option value="in">deposit 💵</option>
+                                    <option value="salary">Salary 💵</option>
+                                    <option value="stock">Stock 📈</option>
                                     <option value="etc">Etc 📦</option>
                                 </select>
                             </div>

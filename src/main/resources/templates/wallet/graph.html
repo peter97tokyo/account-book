@@ -112,16 +112,32 @@ function drawChart(){
                 <tbody>
                     <tr>
                         <td>Withdrawal</td>
-                        <td th:each="out : ${sumWithdrawal}" th:text="${out != null ? #numbers.formatDecimal((out.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"></td>
+                        <td th:each="out : ${sumWithdrawal}"                             
+                           th:classappend="${
+                                (out?.money ?: 0) == 0 ? '' : 
+                                (out?.money ?: 0) < (avgMonthlyWithdrawalForOneYear ?: 0) ? 'table-success' : 
+                                (out?.money ?: 0) > (avgMonthlyWithdrawalForOneYear ?: 0) ? 'table-danger' : ''
+                            }"
+                            th:text="${out != null ? #numbers.formatDecimal((out.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"
+                        ></td>
                     </tr>
                     <tr>
                         <td>Deposit</td>
                         <td th:each="in : ${sumDeposit}" th:text="${in != null ? #numbers.formatDecimal((in.money?:0), 0, 'COMMA', 0, 'POINT') : '0'}"></td>
                     </tr>
+                   <tr>
+                        <td>Left</td>
+                        <td th:each="in, inStat : ${sumDeposit}" 
+                            th:text="${#numbers.formatDecimal(((in?.money ?: 0) - (sumWithdrawal[inStat.index]?.money ?: 0)), 0, 'COMMA', 0, 'POINT')}"
+                            th:classappend="${
+                                    ((in?.money ?: 0) - (sumWithdrawal[inStat.index]?.money ?: 0)) < 0 ? 'table-danger' : 
+                                    (((in?.money ?: 0) - (sumWithdrawal[inStat.index]?.money ?: 0)) > 0 ? 'table-success' : '')
+                        }"></td>
+                    </tr>
                 </tbody>
             </table>
         </section>
-
+        
 
         <section class="d-flex justify-content-around my-4">
             <div class="card text-center shadow-sm" style="width: 200px;">

@@ -20,7 +20,8 @@
             <span th:if="${wallet.type == 'food'}" >Food cost 🍖</span>
             <span th:if="${wallet.type == 'goods'}" >Sundry goods 🧩</span>
             <span th:if="${wallet.type == 'gift'}" >Gift 🎁</span>
-            <span th:if="${wallet.type == 'in'}" >deposit 💵</span>
+            <span th:if="${wallet.type == 'salary'}" >Salary 💵</span>
+            <span th:if="${wallet.type == 'stock'}" >Stock 📈</span>
             <span th:if="${wallet.type == 'etc'}" >Etc 📦</span>
         <br>
             <span th:text="${wallet.memo}"></span>
@@ -46,7 +47,8 @@
             <span th:if="${wallet.type == 'food'}" >Food cost 🍖</span>
             <span th:if="${wallet.type == 'goods'}" >Sundry goods 🧩</span>
             <span th:if="${wallet.type == 'gift'}" >Gift 🎁</span>
-            <span th:if="${wallet.type == 'in'}" >deposit 💵</span>
+            <span th:if="${wallet.type == 'salary'}" >Salary 💵</span>
+            <span th:if="${wallet.type == 'stock'}" >Stock 📈</span>
             <span th:if="${wallet.type == 'etc'}" >Etc 📦</span>
         <br>
             <span th:text="${wallet.memo}"></span>

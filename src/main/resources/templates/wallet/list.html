@@ -31,11 +31,12 @@
             <select class="form-select w-auto" name="type">
                 <option value="">ALL</option>
                 <option value="rent" th:selected="${type == 'rent'}">Monthly rent 🏠</option>
-                <option value="util" th:selected="${type == 'util'}">Utilities 💡</option>
+                <option value="util" th:selected="${type == 'util'}">Utilities 💄</option>
                 <option value="food" th:selected="${type == 'food'}">Food cost 🍖</option>
                 <option value="goods" th:selected="${type == 'goods'}">Sundry goods 🧩</option>
                 <option value="gift" th:selected="${type == 'gift'}">Gift 🎁</option>
-                <option value="in" th:selected="${type == 'in'}">deposit 💵</option>
+                <option value="salary" th:selected="${type == 'salary'}">Salary 💵</option>
+                <option value="stock" th:selected="${type == 'stock'}">Stock 📈</option>
                 <option value="etc" th:selected="${type == 'etc'}">Etc 📦</option>
             </select>
 
@@ -71,7 +72,8 @@
                         <div th:if="${item.type == 'food'}">Food cost 🍖</div>
                         <div th:if="${item.type == 'goods'}">Sundry goods 🧩</div>
                         <div th:if="${item.type == 'gift'}">Gift 🎁</div>
-                        <div th:if="${item.type == 'in'}">deposit 💵</div>
+                        <div th:if="${item.type == 'salary'}">Salary 💵</div>
+                        <div th:if="${item.type == 'stock'}">Stock 📈</div>
                         <div th:if="${item.type == 'etc'}">Etc 📦</div>
                     </td>
                     <td>

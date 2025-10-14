@@ -42,9 +42,12 @@
                         <option value="gift"
                                 th:selected="${wallet.type == 'gift'}">Gift 🎁</option>
 
-                        <option value="in"
-                                th:selected="${wallet.type == 'in'}">deposit 💵</option>
-
+                        <option value="salary"
+                                th:selected="${wallet.type == 'salary'}">Salary 💵</option>
+                        
+                        <option value="stock"
+                                th:selected="${wallet.type == 'stock'}">Stock 📈</option>
+                                
                         <option value="etc"
                                 th:selected="${wallet.type == 'etc'}">Etc 📦</option>
                     </select>
