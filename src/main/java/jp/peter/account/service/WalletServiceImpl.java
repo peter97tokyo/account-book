@@ -1,10 +1,18 @@
 package jp.peter.account.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -99,9 +107,8 @@ public class WalletServiceImpl implements WalletService {
             }
         }
 
-        // items가 비어 있어도 안전하게 null 또는 기본값 채우기
         for (int i = 0; i < startNumberNeeds; i++) {
-            result.add(null); // 필요하면 WalletDto에 기본값 넣어도 됨
+            result.add(null); 
         }
 
         for (Object[] item : items) {
@@ -112,9 +119,8 @@ public class WalletServiceImpl implements WalletService {
             result.add(wallet);
         }
 
-        // result가 12개 미만이면 null 또는 기본값으로 채우기
         while (result.size() < 12) {
-            result.add(null); // 필요시 기본 WalletDto 생성 가능
+            result.add(null); 
         }
         return result;
 
@@ -138,6 +144,57 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public Long avgDailyWithdrawalForMonth(short year, byte month, boolean depositWithdrawal) {
         return walletRepository.avgDailyWithdrawalForMonth(year, month, depositWithdrawal);
+    }
+
+    @Override
+    public List<Wallet> getExcel(LocalDateTime startDate,
+                                LocalDateTime endDate,
+                                String memo,
+                                Boolean depositWithdrawal,
+                                String type) {
+        Specification<Wallet> spec = Specification
+            .where(WalletSpecification.inputDateBetween(startDate, endDate))
+            .and(WalletSpecification.memoContains(memo))
+            .and(WalletSpecification.depositWithdrawalEquals(depositWithdrawal))
+            .and(WalletSpecification.typeContains(type));
+        return walletRepository.findAll(spec, Sort.by("inputDate").descending());
+    }
+
+    public ByteArrayInputStream exportWalletToExcel(LocalDateTime startDate,
+                                                LocalDateTime endDate,
+                                                String memo,
+                                                Boolean depositWithdrawal,
+                                                String type) throws IOException {
+        List<Wallet> walletList = getExcel(startDate, endDate, memo, depositWithdrawal, type);
+
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = (Sheet) workbook.createSheet("Wallet Data");
+            Row headerRow = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(0);
+            String[] headers = {"Date", "Deposit/Withdrawal", "Type", "Money", "Memo"};
+            
+            for (int i = 0; i < headers.length; i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(headers[i]);
+            }
+
+            int rowNum = 1;
+            for (Wallet w : walletList) {
+                Row row = ((org.apache.poi.ss.usermodel.Sheet) sheet).createRow(rowNum++);
+                row.createCell(0).setCellValue(w.getInputDate().toString());
+                row.createCell(1).setCellValue(w.getDepositWithdrawal() ? "Deposit" : "Withdrawal");
+                row.createCell(2).setCellValue(w.getType());
+                row.createCell(3).setCellValue(w.getMoney().doubleValue());
+                row.createCell(4).setCellValue(w.getMemo());
+            }
+
+            for (int i = 0; i < headers.length; i++) {
+                ((org.apache.poi.ss.usermodel.Sheet) sheet).autoSizeColumn(i);
+            }
+
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+        }
     }
 
 }

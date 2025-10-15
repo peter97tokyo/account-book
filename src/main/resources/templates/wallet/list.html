@@ -16,8 +16,10 @@
 
     <main class="container">
         
-        <form class="my-4 text-end d-flex justify-content-center align-items-center gap-2 p-3 bg-light rounded shadow-sm"
-            method="get">
+       <form class="my-4 text-end d-flex justify-content-center align-items-center gap-2 p-3 bg-light rounded shadow-sm"
+            method="get"
+            id="searchForm"
+            th:action="@{/wallet/list}">
 
             <input type="text" id="searchInput" name="memo" class="form-control w-25" placeholder="Search..."
                 th:value="${memo}">
@@ -40,12 +42,13 @@
                 <option value="etc" th:selected="${type == 'etc'}">Etc 📦</option>
             </select>
 
-            <input type="date" id="startDate" name="startDate" class="form-control w-auto"
-                th:value="${startDate}">
-            <input type="date" id="endDate" name="endDate" class="form-control w-auto"
-                th:value="${endDate}">
+            <input type="date" id="startDate" name="startDate" class="form-control w-auto" th:value="${startDate}">
+            <input type="date" id="endDate" name="endDate" class="form-control w-auto" th:value="${endDate}">
 
-            <button type="submit" class="btn btn-primary">SEARCH</button>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">SEARCH</button>
+                <button type="button" class="btn btn-success" id="excelBtn">EXCEL</button>
+            </div>
         </form>
 
 

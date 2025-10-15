@@ -1,5 +1,7 @@
 package jp.peter.account.controller;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -12,9 +14,15 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -455,6 +463,23 @@ public class WalletController {
         walletService.save(updateWallet);
 
         return ResponseEntity.ok().body(Map.of("success", true));
+    }
+    
+    @GetMapping("/wallet/excel")
+    public ResponseEntity<Resource> downloadExcel(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate,
+            @RequestParam(required = false) String memo,
+            @RequestParam(required = false) Boolean depositWithdrawal,
+            @RequestParam(required = false) String type
+    ) throws IOException {
+        ByteArrayInputStream excelFile = walletService.exportWalletToExcel(startDate, endDate, memo, depositWithdrawal, type);
+        InputStreamResource resource = new InputStreamResource(excelFile);
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=wallet_data.xlsx")
+            .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            .body(resource);
     }
     
 }

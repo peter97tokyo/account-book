@@ -134,6 +134,12 @@ window.onload = function() {
         $("#toast").offset({ top: mouseY, left: mouseX });
     });
     
+    document.getElementById('excelBtn').addEventListener('click', function () {
+        const form = document.getElementById('searchForm');
+        form.action = '/wallet/excel';
+        form.submit();
+        form.action = '/wallet/list';
+    });
 };
 
 

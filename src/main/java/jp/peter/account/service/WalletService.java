@@ -1,5 +1,7 @@
 package jp.peter.account.service;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -40,5 +42,9 @@ public interface WalletService {
     Long avgDailyWithdrawalForOneYear(short year, boolean depositWithdrawal);
 
     Long avgDailyWithdrawalForMonth(short year, byte month, boolean depositWithdrawal);
+    
+    List<Wallet> getExcel(LocalDateTime startDate, LocalDateTime endDate, String memo, Boolean depositWithdrawal, String type);
+
+    ByteArrayInputStream exportWalletToExcel(LocalDateTime startDate, LocalDateTime endDate, String memo, Boolean depositWithdrawal, String type) throws IOException;
     
 }
