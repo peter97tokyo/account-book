@@ -111,3 +111,49 @@
 .wallet-history {
     margin: 10px;
 }
+
+
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 10mm;
+    }
+
+    body {
+        font-size: 12pt;
+        line-height: 1.2;
+        color: #000;
+        background: #fff;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+    #printableArea, #printableArea * {
+        visibility: visible;
+    }
+    #printableArea {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse !important;
+        table-layout: fixed; 
+        page-break-inside: avoid; 
+    }
+
+    th, td {
+        border: 1px solid #333 !important;
+        padding: 4px;
+        height: 60px;         
+        max-height: 60px;     
+        overflow: hidden;     
+        vertical-align: top;
+        word-wrap: break-word;
+    }
+
+}

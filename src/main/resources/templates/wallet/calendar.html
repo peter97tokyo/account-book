@@ -169,19 +169,23 @@
             </form>
         </section>
 
+        <section class="d-flex justify-content-end my-4">
+            <form action="/wallet/printCalendar" method="post" target="_blank" class="d-inline">
+                <input type="hidden" name="year" th:value="${year}" />
+                <input type="hidden" name="month" th:value="${month}" />
+                <button type="submit" class="btn btn-secondary">Print</button>
+            </form>
+        </section>
+
         <section id="contentSidebar" class="content-sidebar">
             <a href="javascript:void(0)" class="close-btn" onclick="closeSidebar()">×</a>
             <div id="walletHistory" class="wallet-history"></div>
         </section>
 
         <section id="popupUpdtForm" class="popup-updt-form">
-            
         </section>
-
         
-
     </main>
     <div th:insert="fragment/footer :: site-footer"></div>
-
 </body>
 </html>

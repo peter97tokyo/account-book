@@ -214,6 +214,91 @@ public class WalletController {
         return "wallet/calendar";
     }
 
+    @PostMapping("/wallet/printCalendar")
+    public String printCalendar(@RequestParam(required = false) Integer year,
+                            @RequestParam(required = false) Integer month,
+                            Model model) {
+
+        LocalDate today = LocalDate.now();
+
+        if (year == null || month == null) {
+            year = today.getYear();
+            month = today.getMonthValue();
+        }
+
+        LocalDate startDate = LocalDate.of(year, month, 1);
+
+        DayOfWeek week = startDate.getDayOfWeek();
+        int firstDayWeek = week.getValue();
+
+        int lastDay = startDate.lengthOfMonth();
+
+        List<List<Integer>> weeks = new ArrayList<>();
+        List<Integer> days = new ArrayList<>();
+        int getDay = 1;
+
+        for (int i = 0; i <= 41; i++) {
+            if (firstDayWeek <= i && getDay <= lastDay) {
+                days.add(getDay);
+                getDay++;
+            } else {
+                days.add(null);
+            }
+        }
+
+        for (int j = 0; j < 6; j++) {
+            List<Integer> weekWithForeach = new ArrayList<>(days.subList(0, 7));
+            weeks.add(weekWithForeach);
+            days.subList(0, 7).clear();
+        }
+
+        Long sumMoney = null;
+        short yearShort = year.shortValue(); 
+        byte monthByte = month.byteValue();  
+        byte dayByte = 0;
+        Long[] dailyWithdrawal = new Long[lastDay + 1];
+        Long[] dailyDeposit = new Long[lastDay + 1];
+
+        for (int i = 0; i <= lastDay; i++) {
+            dayByte = (byte) i;
+
+            sumMoney = walletService.findDailyWithdrawalByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            dailyWithdrawal[i] = sumMoney;
+
+            sumMoney = walletService.findDailyDepositByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            dailyDeposit[i] = sumMoney;
+        }
+
+        Long totalDeposit = walletService.findTotalInOut(yearShort, monthByte, true);
+        Long totalWithdrawal = walletService.findTotalInOut(yearShort, monthByte, false);
+
+        int prevMonth = month - 1;
+        int prevYear = year;
+
+        if (prevMonth == 0) {
+            prevMonth = 12;
+            prevYear--;
+        }
+
+        Long totalWithdrawalPrevMonth = walletService.findTotalInOut((short) prevYear, (byte) prevMonth, false);
+        Long avgDailyWithdrawalForMonth = walletService.avgDailyWithdrawalForMonth(yearShort, monthByte, false);
+        Long avgDailyWithdrawalForOneYear = walletService.avgDailyWithdrawalForOneYear(yearShort, false);
+
+        model.addAttribute("totalDeposit", totalDeposit);
+        model.addAttribute("totalWithdrawal", totalWithdrawal);
+        model.addAttribute("totalWithdrawalPrevMonth", totalWithdrawalPrevMonth);
+        model.addAttribute("avgDailyWithdrawalForMonth", avgDailyWithdrawalForMonth);
+        model.addAttribute("avgDailyWithdrawalForOneYear", avgDailyWithdrawalForOneYear);
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+        model.addAttribute("firstDayWeek", firstDayWeek);
+        model.addAttribute("lastDay", lastDay);
+        model.addAttribute("weeks", weeks);
+        model.addAttribute("dailyWithdrawal", dailyWithdrawal);
+        model.addAttribute("dailyDeposit", dailyDeposit);
+        return "wallet/printCalendar";
+    }
+
     @GetMapping("/wallet/list")
     public String list(Model model,
                     @RequestParam(value="page", defaultValue="0") int page,

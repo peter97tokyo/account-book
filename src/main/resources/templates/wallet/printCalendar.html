@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCOUNT BOOK PRINT CALENDAR</title>
+    <link rel="stylesheet" href="/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/account-book.css">
+    
+    <script src="/js/jquery/jquery-3.6.0.min.js"></script>
+    <script src="/js/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="/js/account-book.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            window.print();
+            window.onafterprint = function() {
+            window.close();
+            };
+        });
+    </script>
+</head>
+<body>
+    <section id="printableArea" class="">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold">Account Book Calendar</h2>
+            <p>
+            <span th:text="${year}">2025</span> /
+            <span th:text="${month}">10</span>
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <table class="table table-bordered text-center align-middle">
+            <thead class="table-light">
+                <tr>
+                <th>Prev. Month Out</th>
+                <th>In</th>
+                <th>Out</th>
+                <th>Left</th>
+                <th>Daily Avg</th>
+                <th>YTD Avg</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td th:text="${#numbers.formatDecimal((totalWithdrawalPrevMonth?:0), 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal((totalDeposit?:0), 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal((totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal((totalDeposit?:0) - (totalWithdrawal?:0), 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal((avgDailyWithdrawalForMonth?:0), 0, 'COMMA', 0, 'POINT')}"></td>
+                <td th:text="${#numbers.formatDecimal((avgDailyWithdrawalForOneYear?:0), 0, 'COMMA', 0, 'POINT')}"></td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
+        <div>
+            <table class="table table-bordered text-center align-middle">
+            <thead class="table-dark text-white">
+                <tr>
+                <th>Sun</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Sat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="week : ${weeks}">
+                <td th:each="days : ${week}">
+                    <div th:if="${days != null}">
+                    <div th:text="${days}" class="fw-bold"></div>
+                    <div th:if="${dailyDeposit[days] != null}" th:text="'In: ' + ${#numbers.formatDecimal(dailyDeposit[days], 0, 'COMMA', 0, 'POINT')}" class="text-success small"></div>
+                    <div th:if="${dailyWithdrawal[days] != null}" th:text="'Out: ' + ${#numbers.formatDecimal(dailyWithdrawal[days], 0, 'COMMA', 0, 'POINT')}" class="text-danger small"></div>
+                    </div>
+                </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <small class="text-muted">
+            Generated on
+            <span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}">2025-10-14 21:00</span>
+            </small>
+        </div>
+    </section>
+    
+</body>
+</html>
