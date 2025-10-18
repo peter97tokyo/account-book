@@ -13,68 +13,113 @@
     <script src="/js/charts/loader.js"></script>
 </head>
 <script>
-google.load('visualization', '1', { packages : [ 'corechart' ]});
-google.setOnLoadCallback(drawChart);
+    google.load('visualization', '1', { packages: ['corechart'] });
+    google.setOnLoadCallback(initCharts);
 
-function drawChart(){
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'Month');
-	data.addColumn('number', 'Withdrawal');
-    data.addColumn('number', 'Deposit');
-	
-    const withdrawals = document.querySelectorAll('div.withdrawals input[data-month]');
-    const deposits = document.querySelectorAll('div.deposits input[data-month]');
-
-    const rows = [];
-    for (let i = 0; i < withdrawals.length; i++) {
-        const month = withdrawals[i].dataset.month;
-        const outValue = parseInt(withdrawals[i].dataset.value, 10);
-        const inValue = parseInt(deposits[i].dataset.value, 10);
-        rows.push([month, outValue, inValue]);
+    function initCharts() {
+        drawMonthlyChart();
+        drawDailyChart();
     }
-    data.addRows(rows);
 
-	var option = {
-		title: 'GRAPH',
-		width: '100%',
-		height: '100%',
-		series: [
-			{ type: 'line', targetAxisIndex: 0 },
-			{ type: 'bars', targetAxisIndex: 1 }
-			
-		],
-		vAxes: [
-            { title: 'Withdrawal' },
-			{ title: 'Deposit' },
-            
-		]
-	};
-	
-	var chart = new google.visualization.ComboChart(document.getElementById('chart'));
-	chart.draw(data, option);
-}
+    function drawMonthlyChart() {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Month');
+        data.addColumn('number', 'Withdrawal');
+        data.addColumn('number', 'Deposit');
+
+        const withdrawals = document.querySelectorAll('div.month-withdrawals input[data-month]');
+        const deposits = document.querySelectorAll('div.month-deposits input[data-month]');
+
+        const rows = Array.from(withdrawals).map((input, i) => [
+            input.dataset.month,
+            Number(input.dataset.value || 0),
+            Number(deposits[i]?.dataset.value || 0)
+        ]);
+        data.addRows(rows);
+
+        const options = {
+            title: 'Monthly Withdrawal / Deposit',
+            seriesType: 'bars',
+            series: [
+                { type: 'line', targetAxisIndex: 0 },
+                { type: 'bars', targetAxisIndex: 1 }
+            ],
+            vAxes: {
+                0: { title: 'Withdrawal' },
+                1: { title: 'Deposit' }
+            },
+            legend: { position: 'top' },
+            width: '100%',
+            height: 400
+        };
+
+        new google.visualization.ComboChart(document.getElementById('monthlyChart')).draw(data, options);
+    }
+
+    function drawDailyChart() {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Day');
+        data.addColumn('number', 'Withdrawal');
+        data.addColumn('number', 'Deposit');
+
+        const withdrawals = document.querySelectorAll('div.detailed-withdrawals input[data-detail]');
+        const deposits = document.querySelectorAll('div.detailed-deposits input[data-detail]');
+
+        const rows = Array.from(withdrawals).map((input, i) => [
+            input.dataset.detail,
+            Number(input.dataset.value || 0),
+            Number(deposits[i]?.dataset.value || 0)
+        ]);
+        data.addRows(rows);
+
+        const options = {
+            title: 'Daily Withdrawal / Deposit',
+            seriesType: 'bars',
+            series: [
+                { type: 'line', targetAxisIndex: 0 },
+                { type: 'bars', targetAxisIndex: 1 }
+            ],
+            vAxes: {
+                0: { title: 'Withdrawal' },
+                1: { title: 'Deposit' }
+            },
+            legend: { position: 'top' },
+            width: '100%',
+            height: 400
+        };
+
+        new google.visualization.ComboChart(document.getElementById('dailyChart')).draw(data, options);
+    }
 </script>
 <body>
     <div th:insert="fragment/header :: site-header"></div>
     
     <main class="container">
-        <section class="hidden-input">
-            <div th:each="out, stat : ${sumWithdrawal}" class="withdrawals">
+        <section class="hidden-monthly-input">
+            <div th:each="out, stat : ${sumWithdrawal}" class="month-withdrawals">
                 <input type="hidden"
                     th:attr="data-month=${stat.index + 1}, data-value=${out != null ? out.money : 0}" />
             </div>
-            <div th:each="in, stat : ${sumDeposit}" class="deposits">
+            <div th:each="in, stat : ${sumDeposit}" class="month-deposits">
                 <input type="hidden"
                     th:attr="data-month=${stat.index + 1}, data-value=${in != null ? in.money : 0}" />
             </div>
         </section>
         <section class="table-section my-4 p-3 bg-light rounded shadow-sm">
             <div class="d-flex justify-content-between mb-3">
-                <button type="button" class="btn btn-dark"
-                        th:onclick="'window.location.href=\'/wallet/graph?year=' + (${year} - 1) + '\';'">&lt;&lt;</button>
+                <div>
+                   <button type="button" class="btn btn-dark"
+                        th:onclick="'window.location.href=\'/wallet/graph?year=' + (${year} - 1) + '&detailedYear=' + ${detailedYear} + '&detailedMonth=' + ${detailedMonth} + '\';'">
+                        &lt;&lt;
+                    </button>
+
+                </div>
                 <h2 class="text-center" th:text="'Deposit and withdrawal records for ' + ${year}">Withdrawal And Deposit</h2>
-                <button type="button" class="btn btn-dark"
-                        th:onclick="'window.location.href=\'/wallet/graph?year=' + (${year} + 1) + '\';'">&gt;&gt;</button>
+                
+                    <button type="button" class="btn btn-dark"
+                        th:onclick="'window.location.href=\'/wallet/graph?year=' + (${year} + 1) + '&detailedYear=' + ${detailedYear} + '&detailedMonth=' + ${detailedMonth} + '\';'">
+                        &gt;&gt;
+                    </button>
             </div>
             <table class="table table-bordered text-center fixed-table" id="accountTable">
                  <colgroup>
@@ -173,11 +218,52 @@ function drawChart(){
         </section>
 
         <section class="graph-section my-4 p-3 bg-light rounded shadow-sm">
-            <h2 class="text-center mb-3">Monthly Withdrawal / Deposit Graph</h2>
-            <div id="chart" style="width: 100%; height: 400px;"></div>    
+            <h2 class="text-center mb-3">Monthly Withdrawal / Deposit Graph For [[${year}]]</h2>
+            <div id="monthlyChart" style="height: 400px;"></div>    
         </section>     
+
+        <section class="hidden-detailed-graph">
+            <div class="detailed-withdrawals">
+                <th:block th:each="i : ${#numbers.sequence(1, lastDay)}">
+                    <input type="hidden" 
+                            th:attr="data-detail=${i}, 
+                                    data-value=${dailyWithdrawal[i] != null ? dailyWithdrawal[i] : 0}" />
+                </th:block>
+            </div>
+            <div class="detailed-deposits">
+                <th:block th:each="i : ${#numbers.sequence(1, lastDay)}">
+                    <input type="hidden" 
+                            th:attr="data-detail=${i}, 
+                                    data-value=${dailyDeposit[i] != null ? dailyDeposit[i] : 0}" />
+                </th:block>
+            </div>
+        </section>
+        <section class="my-4 p-3 bg-light rounded shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <form method="get" th:action="@{/wallet/graph}" class="d-inline">
+                    <input type="hidden" name="year" th:value="${year}" />
+                    <input type="hidden" name="detailedYear" th:value="${detailedMonth == 1 ? detailedYear - 1 : detailedYear}" />
+                    <input type="hidden" name="detailedMonth" th:value="${detailedMonth == 1 ? 12 : detailedMonth - 1}" />
+                    <button type="submit" class="btn btn-dark">&lt;&lt;</button>
+                </form>
+
+                <h2 class="text-center mb-3">Withdrawal / Deposit Graph For [[${detailedYear}]]. [[${detailedMonth}]]</h2> 
+
+                <form method="get" th:action="@{/wallet/graph}" class="d-inline">
+                    <input type="hidden" name="year" th:value="${year}" />
+                    <input type="hidden" name="detailedYear" th:value="${detailedMonth == 12 ? detailedYear + 1 : detailedYear}" />
+                    <input type="hidden" name="detailedMonth" th:value="${detailedMonth == 12 ? 1 : detailedMonth + 1}" />
+                    <button type="submit" class="btn btn-dark">&gt;&gt;</button>
+                </form>
+            </div>     
+            <div id="dailyChart" style="height:400px;"></div>
+        </section>
+        <!-- 
+        <iframe src="/wallet/calendarGraph" style="width:100%; height:500px;" frameborder="0" scrolling="no" ></iframe>
+        -->
     </main>
-   
+    
     <div th:insert="fragment/footer :: site-footer"></div>
 </body>
 </html>

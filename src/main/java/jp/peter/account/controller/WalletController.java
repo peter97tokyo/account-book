@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -346,7 +345,9 @@ public class WalletController {
     }
 
     @GetMapping("/wallet/graph")
-    public String graph(Model model, @RequestParam(value="year", defaultValue="0") int year) {
+    public String graph(Model model, @RequestParam(value="year", defaultValue="0") int year, 
+                                @RequestParam(required = false) Integer detailedYear,
+                                @RequestParam(required = false) Integer detailedMonth) {
 
         if(year == 0){
             Date today = new Date();
@@ -363,6 +364,38 @@ public class WalletController {
         Long sumWithdrawalOneYear = walletService.sumMoneyForOneYear((short)year, false); // out
         Long avgMonthlyWithdrawalForOneYear = walletService.avgMonthlyMoneyForOneYear((short)year, false); // out
         Long avgDailyWithdrawalForOneYear = walletService.avgDailyWithdrawalForOneYear((short)year, false); // out
+
+        LocalDate today = LocalDate.now();
+        if (detailedYear == null || detailedMonth == null) {
+            detailedYear = today.getYear();
+            detailedMonth = today.getMonthValue();
+        }
+
+        int lastDay = LocalDate.of(detailedYear, detailedMonth, 1).lengthOfMonth();
+
+        Long sumMoney;
+        short yearShort = detailedYear.shortValue();
+        byte monthByte = detailedMonth.byteValue();
+        byte dayByte;
+
+        Long[] dailyWithdrawal = new Long[lastDay + 1];
+        Long[] dailyDeposit = new Long[lastDay + 1];
+
+        for (int i = 0; i <= lastDay; i++) {
+            dayByte = (byte) i;
+
+            sumMoney = walletService.findDailyWithdrawalByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            dailyWithdrawal[i] = sumMoney;
+
+            sumMoney = walletService.findDailyDepositByYearAndMonthAndDayNative(yearShort, monthByte, dayByte);
+            dailyDeposit[i] = sumMoney;
+        }
+
+        model.addAttribute("dailyWithdrawal", dailyWithdrawal); 
+        model.addAttribute("dailyDeposit", dailyDeposit);
+        model.addAttribute("detailedYear", detailedYear);
+        model.addAttribute("detailedMonth", detailedMonth);
+        model.addAttribute("lastDay", lastDay);  
 
         model.addAttribute("sumDeposit", sumDeposit);
         model.addAttribute("sumWithdrawal", sumWithdrawal);
