@@ -319,27 +319,30 @@ public class WalletController {
         LocalDateTime endDateTime   = (endDate != null) ? endDate.atTime(23, 59, 59) : null;
 
         Page<Wallet> paging = walletService.getPage(page, startDateTime, endDateTime, memo, depositWithdrawal, type);
-
         model.addAttribute("paging", paging);
 
+        int totalPages = paging.getTotalPages();
         int prevPage = paging.hasPrevious() ? page - 1 : 0;
-        int nextPage = paging.hasNext() ? page + 1 : paging.getTotalPages() - 1;
-        
-        List<Integer> pages = IntStream.range(0, paging.getTotalPages())
-                                    .boxed()
-                                    .collect(Collectors.toList());
-        
-        
+        int nextPage = paging.hasNext() ? page + 1 : totalPages - 1;
+
+        int blockSize = 5; 
+        int currentBlock = page / blockSize;
+        int startPage = currentBlock * blockSize;
+        int endPage = Math.min(startPage + blockSize, totalPages);
+
+        List<Integer> pages = IntStream.range(startPage, endPage)
+                .boxed()
+                .collect(Collectors.toList());
+
         model.addAttribute("prevPage", prevPage);
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("pages", pages);
-        
+
         model.addAttribute("memo", memo != null ? memo : "");
         model.addAttribute("depositWithdrawal", depositWithdrawal != null ? depositWithdrawal : "");
         model.addAttribute("type", type != null ? type : "");
         model.addAttribute("startDate", startDate != null ? startDate : "");
         model.addAttribute("endDate", endDate != null ? endDate : "");
-
 
         return "wallet/list";
     }
