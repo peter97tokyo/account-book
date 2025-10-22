@@ -415,7 +415,7 @@ public class WalletController {
         return "wallet/graph"; 
     }
 
-    @PostMapping("/wallet")
+    @PostMapping("/wallet/save")
     public ResponseEntity<?> saveWallet(@RequestBody WalletDto walletDto) {
         Wallet saveWallet = new Wallet();
 
@@ -446,7 +446,7 @@ public class WalletController {
     }
 
 
-    @GetMapping("wallet")
+    @GetMapping("wallet/subList")
     public String wallet(@ModelAttribute WalletDto walletDto, Model model) {
 
         String dateStr = walletDto.getChoosedDate(); 
@@ -466,7 +466,7 @@ public class WalletController {
     public String deleteWallet(@RequestBody WalletDto walletDto) {
         Long id = walletDto.getId();
         walletService.deleteById(id);
-        return "wallet history is deleted!!";
+        return "history is deleted!!";
     }
 
     @PostMapping("/wallet/updateForm")

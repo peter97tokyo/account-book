@@ -29,7 +29,7 @@ function openSidebar(year, month, day) {
     document.getElementById("contentSidebar").classList.add("open");
     var choosedDate = year + "-" + month + "-" + day
     $.ajax({
-        url: "/wallet",   
+        url: "/wallet/subList",   
         type: "GET",          
         data: { choosedDate: choosedDate },      
         dataType: "html",     
@@ -49,7 +49,7 @@ function closeSidebar() {
 
 function deleteWallet(id) {
     
-    if (!confirm("are you sure? do yo delete this wallet history?")) return;
+    if (!confirm("are you sure? do you delete this history?")) return;
 
     $.ajax({
         url: "/wallet/delete",
@@ -110,7 +110,7 @@ window.onload = function() {
         });
 
         $.ajax({
-            url: "/wallet",
+            url: "/wallet/save",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify(jsonData),
@@ -134,12 +134,16 @@ window.onload = function() {
         $("#toast").offset({ top: mouseY, left: mouseX });
     });
     
-    document.getElementById('excelBtn').addEventListener('click', function () {
-        const form = document.getElementById('searchForm');
-        form.action = '/wallet/excel';
-        form.submit();
-        form.action = '/wallet/list';
-    });
+    const excelBtn = document.getElementById("excelBtn");
+    if (excelBtn) {
+        excelBtn.addEventListener("click", () => {
+            const form = document.getElementById('searchForm');
+            form.action = '/wallet/excel';
+            form.submit();
+            form.action = '/wallet/list';
+        });
+    }
+    
 };
 
 
