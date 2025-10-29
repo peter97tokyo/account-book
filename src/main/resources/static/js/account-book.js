@@ -66,6 +66,56 @@ function deleteWallet(id) {
     });
 }
 
+function blockOptions() {
+    const depositSelect = $("select[name='depositWithdrawal']");
+    const typeSelect = $("select[name='type']");
+    
+    depositSelect.on("change", function() {
+        const isDeposit = $(this).val() === "true";
+
+        typeSelect.find("option").prop("disabled", false);
+
+        if (isDeposit) {
+            typeSelect.find("option[value='rent'], option[value='util'], option[value='food'], option[value='goods'], option[value='gift']").prop("disabled", true);
+        } else {
+            typeSelect.find("option[value='salary'], option[value='stock']").prop("disabled", true);
+        }
+
+        typeSelect.val("");
+    });
+
+    depositSelect.val("false").trigger("change");
+}
+
+function blockUpdtOptions() {
+    const $form = $("#walletUpdtFrm");
+    const depositSelect = $form.find("select[name='depositWithdrawal']");
+    const typeSelect = $form.find("select[name='type']");
+    console.log(typeSelect.val())
+    const selectedValue = typeSelect.val(); // 현재 선택된 값 저장
+
+    depositSelect.on("change", function() {
+        const isDeposit = $(this).val() === "true";
+
+        typeSelect.find("option").prop("disabled", false);
+
+        if (isDeposit) {
+        
+            typeSelect.find("option[value='rent'], option[value='util'], option[value='food'], option[value='goods'], option[value='gift']")
+                      .prop("disabled", true);
+        } else {
+        
+            typeSelect.find("option[value='salary'], option[value='stock']")
+                      .prop("disabled", true);
+        }
+        typeSelect.val("");
+    });
+    depositSelect.trigger("change");
+    typeSelect.val(selectedValue);
+
+}
+
+
 function popupWalletUpdtFrm(id) {
     $.ajax({
         url: "/wallet/updateForm",
@@ -74,6 +124,7 @@ function popupWalletUpdtFrm(id) {
         data: { id: id },        
         success: function (result) {
             $("#popupUpdtForm").html(result);
+            blockUpdtOptions();
         },
         error: function (xhr, status, error) {
             alert("Fail update form: " + error);
@@ -88,10 +139,11 @@ function closePopupUpdtForm() {
 function showToast(e) {
     var mouseX = e.pageX;
     var mouseY = e.pageY;
-    console.log('클릭 위치: X=' + mouseX + ', Y=' + mouseY);
 }
 
 window.onload = function() {
+    blockOptions();
+
     $("#walletForm").on("submit", function(e) {
         e.preventDefault(); 
 

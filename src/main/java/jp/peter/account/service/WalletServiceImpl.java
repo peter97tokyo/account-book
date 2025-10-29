@@ -96,35 +96,34 @@ public class WalletServiceImpl implements WalletService {
     public List<WalletDto> sumMoneyByYearAndMonth(short year, boolean depositWithdrawal) {
         List<Object[]> items = walletRepository.sumMoneyByYearAndMonth(year, depositWithdrawal);
         List<WalletDto> result = new ArrayList<>();
-        WalletDto wallet;
-        int startNumber = 0;
-        int startNumberNeeds = 0;
 
-        if (!items.isEmpty()) {
-            startNumber = ((Number) items.get(0)[1]).intValue();
-            if (startNumber > 1) {
-                startNumberNeeds = startNumber - 1;
-            }
-        }
-
-        for (int i = 0; i < startNumberNeeds; i++) {
-            result.add(null); 
-        }
+        int expectedMonth = 1; 
 
         for (Object[] item : items) {
-            wallet = new WalletDto();
+            int month = ((Number) item[1]).intValue();
+
+            while (expectedMonth < month) {
+                result.add(null);
+                expectedMonth++;
+            }
+
+            WalletDto wallet = new WalletDto();
             wallet.setYear(((Number) item[0]).longValue());
-            wallet.setMonth(((Number) item[1]).longValue());
+            wallet.setMonth((long) month);
             wallet.setMoney(((Number) item[2]).longValue());
             result.add(wallet);
+
+            expectedMonth++;
         }
 
-        while (result.size() < 12) {
-            result.add(null); 
+        while (expectedMonth <= 12) {
+            result.add(null);
+            expectedMonth++;
         }
+
         return result;
-
     }
+
 
     @Override
     public Long sumMoneyForOneYear(short year, boolean depositWithdrawal) {
